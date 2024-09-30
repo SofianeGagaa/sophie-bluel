@@ -22,7 +22,7 @@ const URL = "http://localhost:5678/api/";
 
 // }
 
-// const worksElt = document.getElementById("work");
+// const worksElements = document.getElementById("work");
 
 // let works = [];
 
@@ -37,31 +37,31 @@ const URL = "http://localhost:5678/api/";
 //             <figcaption>${work.title}</figcaption>
 //         `;
 
-//         worksElt.appendCild(figure);
+//         worksElements.appendCild(figure);
 //     }
 // }
 
-// const categoriesElt = document.getElementById("categories");
+// const categoriesElements = document.getElementById("categories");
 // let categories = [];
 
 // const displayCategories = async () => {
 //     categories = await getData(categories);
 
 //     for (const category of categories) {
-//         const categoryElt = document.createElement("button");
+//         const categoryElements = document.createElement("button");
 
-//         categoryElt.setAttribute("data-category-id", category.id);
-//         categoryElt.className = "category_btn";
-//         categoryElt.addEventListener("click", () =>
-//             filterWorks(category.id, categoryElt)
+//         categoryElements.setAttribute("data-category-id", category.id);
+//         categoryElements.className = "category_btn";
+//         categoryElements.addEventListener("click", () =>
+//             filterWorks(category.id, categoryElements)
 //         );
 
-//         categoryElt.textContent = category.name;
-//         categoryElt.appendChild(categoryElt);
+//         category.textContent = category.name;
+//         categoriesElements.appendChild(categoryElements);
 //     }
 // }
 
-// const filterElt = document.getElementById("filter");
+// const filterElements = document.getElementById("filter");
 
 // ******** PRIMARY MODAL ********
 
