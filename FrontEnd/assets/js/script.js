@@ -1,45 +1,49 @@
 "use strict";
 
 // ******** CONSTANTS ********
-
+const URL = "http://localhost:5678/api/";
+const gallery = document.querySelector(".gallery");
 
 // ******** VARIABLES ********
-
+let works = [];
 
 // ******** FUNCTIONS ********
 
-const URL = "http://localhost:5678/api/";
 
-// const getData = async (type) => {
-//     try {
-//         const response = await fetch(URL + type);
-//         const data = await response.json();
-//         return data;
 
-//     } catch (error) {
-//         console.log(error);
-//     }
+const getData = async (type) => {
+    try {
+        const response = await fetch(URL + type);
+        const data = await response.json();
+        return data;
+        
 
-// }
+    } catch (error) {
+        console.log(error);
+    }
 
-// const worksElements = document.getElementById("work");
+}
 
-// let works = [];
+const displayWorks = async () => {
+    works = await getData("works");
 
-// const displayWorks = async () => {
-//     works = await getData(works);
+    for (const work of works) {
+        const figure = document.createElement("figure");
+        const img = document.createElement("img");
+        const figcaption = document.createElement("figcaption");
 
-//     for (const work of works) {
-//         const figure = document.createElement("figure");
+        img.src = work.imageUrl;
+        img.alt = work.title;
+        figcaption.innerText = work.title;
 
-//         figure.innerHTML = `
-//             <img src="${work.imageUrl}">
-//             <figcaption>${work.title}</figcaption>
-//         `;
+        figure.appendChild(img);
+        figure.appendChild(figcaption);
+        gallery.appendChild(figure);
+    }
+}
+// ******** MAIN ********
 
-//         worksElements.appendCild(figure);
-//     }
-// }
+displayWorks();
 
 // const categoriesElements = document.getElementById("categories");
 // let categories = [];
@@ -65,10 +69,11 @@ const URL = "http://localhost:5678/api/";
 
 // ******** PRIMARY MODAL ********
 
+/*** ouverture d'une fenetre de dialogue et preparation de son contenu  */
+
 // const openModal = () => {
 //     let deleteBtn = [];
 
-    /
     // document.getElementById("modal").style.transform = "translateY(0)";
 
     // const ModalImages = document.getElementById("modal-images")
