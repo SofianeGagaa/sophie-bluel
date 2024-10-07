@@ -15,9 +15,6 @@ let categories = [];
 let token = "";
 
 // ******** FUNCTIONS ********
-
-// ******** DATA ********
-
 const getData = async (type) => {
     try {
         const response = await fetch(URL + type);
@@ -71,8 +68,6 @@ const displayCategories = async () => {
 
 /*** ouverture d'une fenetre de dialogue et preparation de son contenu  */
 
-/
-
     works.forEach((work) => {
         const li = document.createElement("li");
         li.innerHTML = `
@@ -81,8 +76,8 @@ const displayCategories = async () => {
         `;
         ModalImages.appendChild(li);
     });
-    const deleteWorks = document.getElementByClassName("delete");
-    deleteBtn = [...deleteWorks];
+    const deleteWorks = document.getElementsByClassName("delete");
+    const deleteBtn = [...deleteWorks];
 
     for (let i = 0; i < deleteBtn.length; i++) {
         deleteBtn[i].addEventListener("click", async function () {
@@ -102,6 +97,9 @@ const displayCategories = async () => {
         })
     }
 
+const openModal = () => {
+    document.getElementById("modal").style.display = "block";
+    document.getElementById("modal").style.opacity = "1";    
 }
 
 const closeModal = () => {

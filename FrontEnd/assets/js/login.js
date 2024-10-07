@@ -1,7 +1,7 @@
 "use strict";
 
 // ******** CONSTANTS ******** //
-const URL = "http://localhost:5678/api/login";
+const URL = "http://localhost:5678/api/users/login";
 
 const form = document.getElementById("login");
 const email = document.getElementById("email");
@@ -27,7 +27,6 @@ const login = async () => {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data);
 
             localStorage.setItem("token", data.token);
             window.location.href = "index.html";
@@ -36,7 +35,7 @@ const login = async () => {
         }
 
     } catch (error) {
-        console.log("Erreur lors de la connexion : " + error);
+        console.error("Erreur lors de la connexion : " + error);
     }
 };
 
