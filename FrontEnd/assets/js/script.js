@@ -2,14 +2,21 @@
 
 // ******** CONSTANTS ********
 const URL = "http://localhost:5678/api/";
+
 const gallery = document.querySelector(".gallery");
+
+const worksElements = document.getElementById("works");
+const categoriesElements = document.getElementById("categories");
+const filterElements = document.getElementById("filter");
 
 // ******** VARIABLES ********
 let works = [];
+let categories = [];
+let token = "";
 
 // ******** FUNCTIONS ********
 
-
+// ******** DATA ********
 
 const getData = async (type) => {
     try {
@@ -41,87 +48,74 @@ const displayWorks = async () => {
         gallery.appendChild(figure);
     }
 }
-// ******** MAIN ********
-
 displayWorks();
 
-// const categoriesElements = document.getElementById("categories");
-// let categories = [];
+const displayCategories = async () => {
+    categories = await getData("categories");
 
-// const displayCategories = async () => {
-//     categories = await getData(categories);
+    for (const category of categories) {
+        const categoryElements = document.createElement("button");
 
-//     for (const category of categories) {
-//         const categoryElements = document.createElement("button");
+        categoryElements.setAttribute("data-category-id", category.id);
+        categoryElements.className = "category_btn";
+        categoryElements.addEventListener("click", () =>
+            filterWorks(category.id, categoryElements)
+        );
 
-//         categoryElements.setAttribute("data-category-id", category.id);
-//         categoryElements.className = "category_btn";
-//         categoryElements.addEventListener("click", () =>
-//             filterWorks(category.id, categoryElements)
-//         );
-
-//         category.textContent = category.name;
-//         categoriesElements.appendChild(categoryElements);
-//     }
-// }
-
-// const filterElements = document.getElementById("filter");
+        category.textContent = category.name;
+        categoriesElements.appendChild(categoryElements);
+    }
+}
 
 // ******** PRIMARY MODAL ********
 
 /*** ouverture d'une fenetre de dialogue et preparation de son contenu  */
 
-// const openModal = () => {
-//     let deleteBtn = [];
+/
 
-    // document.getElementById("modal").style.transform = "translateY(0)";
+    works.forEach((work) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <img src="${work.imageUrl}">
+            <span class = "delete><i class="fa-solid fa-trash-can"></i></span>
+        `;
+        ModalImages.appendChild(li);
+    });
+    const deleteWorks = document.getElementByClassName("delete");
+    deleteBtn = [...deleteWorks];
 
-    // const ModalImages = document.getElementById("modal-images")
-    // ModalImages.innerHTML = "";
+    for (let i = 0; i < deleteBtn.length; i++) {
+        deleteBtn[i].addEventListener("click", async function () {
+            if (confirm("Voulez-vous supprimer cette image ?")) {
 
-//     works.forEach((work) => {
-//         const li = document.createElement("li");
-//         li.innerHTML = `
-//             <img src="${work.imageUrl}">
-//             <span class = "delete><i class="fa-solid fa-trash-can"></i></span>
-//         `;
-//         ModalImages.appendChild(li);
-//     });
-//     const deleteWorks = document.getElementByClassName("delete");
-//     deleteBtn = [...deleteWorks];
+                try {
+                    const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                        method: "DELETE",
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem("token")}`
+                        }
+                    })
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        })
+    }
 
-//     for (let i = 0; i < deleteBtn.length; i++) {
-//         deleteBtn[i].addEventListener("click", async function () {
-//             if (confirm("Voulez-vous supprimer cette image ?")) {
+}
 
-//                 try {
-//                     const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-//                         method: "DELETE",
-//                         headers: {
-//                             'Authorization': `Bearer ${localStorage.getItem("token")}`
-//                         }
-//                     })
-//                 } catch (error) {
-//                     console.log(error);
-//                 }
-//             }
-//         })
-//     }
+const closeModal = () => {
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("modal").style.opacity = "0";
+    document.getElementById("modal").style.transform = "translateY(-100%)";
+}
 
-// }
-
-// const closeModal = () => {
-//     document.getElementById("modal").style.display = "none";
-//     document.getElementById("modal").style.opacity = "0";
-    // document.getElementById("modal").style.transform = "translateY(-100%)";
-// }
-
-// const returnModal = () => {
-//     document.getElementById("overflow-modal").style.display = "none";
-//     document.getElementById("overflow-modal").style.opacity = "0";
-//     document.getElementById(modal).style.display = "block";
-//     document.getElementById(modal).style.opacity = "1";
-// }
+const returnModal = () => {
+    document.getElementById("overflow-modal").style.display = "none";
+    document.getElementById("overflow-modal").style.opacity = "0";
+    document.getElementById(modal).style.display = "block";
+    document.getElementById(modal).style.opacity = "1";
+}
 
 // ******** SECONDARY MODAL ********
 
