@@ -12,7 +12,7 @@ const filterElements = document.getElementById("filter");
 // ******** VARIABLES ********
 let works = [];
 let categories = [];
-let token = "";
+
 
 // ******** FUNCTIONS ********
 const getData = async (type) => {
@@ -45,24 +45,45 @@ const displayWorks = async () => {
         gallery.appendChild(figure);
     }
 }
-displayWorks();
 
-const displayCategories = async () => {
+
+const displayFilters = async () => {
     categories = await getData("categories");
+    console.log(categories);
 
     for (const category of categories) {
         const categoryElements = document.createElement("button");
 
-        categoryElements.setAttribute("data-category-id", category.id);
+        categoryElements.setAttribute("value", category.id);
         categoryElements.className = "category_btn";
         categoryElements.addEventListener("click", () =>
             filterWorks(category.id, categoryElements)
         );
 
-        category.textContent = category.name;
+        categoryElements.textContent = category.name;
         categoriesElements.appendChild(categoryElements);
     }
 }
+
+const logout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+}
+
+const checkToken =  () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        displayFilters();
+        
+    } else {
+        // TODO : afficher la barre noire mode édition
+        // TODO : afficher le bouton modifier à coté du titre mes projets
+        // TODO : remplacer le lien login par le boutton Logout dans la barre de navigation
+
+    }
+
+}
+
 
 // ******** PRIMARY MODAL ********
 
@@ -120,6 +141,7 @@ const returnModal = () => {
 
 
 
+// ******** MAIN CODE ********
 
-
-
+checkToken();
+displayWorks();
