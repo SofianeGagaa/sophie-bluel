@@ -3,14 +3,14 @@
 // ******** CONSTANTS ******** //
 const URL = "http://localhost:5678/api/users/login";
 
-const form = document.getElementById("login");
 const email = document.getElementById("email");
+const form = document.getElementById("login");
 const password = document.getElementById("password");
 const error = document.getElementById("error");
 
 // ******** FUNCTIONS ******** //
 
-const login = async () => {
+const loginData = async () => {
     const user = {
         email: email.value,
         password: password.value,
@@ -19,10 +19,11 @@ const login = async () => {
     try {
         const response = await fetch(URL, {
             method: "POST",
-            body: JSON.stringify(user),
             headers: {
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify(user),
+            // stringify(loginData),
         });
 
         if (response.ok) {
@@ -42,5 +43,5 @@ const login = async () => {
 // ******** EVENT LISTENERS ******** //
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
-    login();
+    loginData();
 });

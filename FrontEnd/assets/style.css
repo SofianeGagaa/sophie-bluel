@@ -1,6 +1,6 @@
 /* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
+	v2.0 | 20110126
+	License: none (public domain)
 */
 
 html, body, div, span, applet, object, iframe,
@@ -186,14 +186,14 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
-[id=login] form {
+/* [id=login] form {
 	display: flex;
 	flex-flow: column;
-}
+} */
 
-footer nav ul {
+/* footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
-}
+} */
 
