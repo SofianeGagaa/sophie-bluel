@@ -73,15 +73,43 @@ const logout = () => {
     window.location.reload();
 }
 
-const checkToken =  () => {
+const checkToken = () => {
     const token = localStorage.getItem("token");
+    // Si le jeton n'est pas dans le localStorage, on affiche les filtres
     if (!token) {
         displayFilters();
         
     } else {
+    // Si le jeton est dans le localStorage, on affiche les projets
         // TODO : afficher la barre noire mode édition
+        const editButton = document.getElementById("edit");
+        if (editButton) {
+        editButton.style.display = "block";
+        }
         // TODO : afficher le bouton modifier à coté du titre mes projets
+        const myWorks = document.getElementById("categories");
+        if (myWorks) {
+        const myWorksButton = document.createElement("button");
+        myWorksButton.textContent = "Modifier";
+        myWorksButton.className = "category_btn";
+        // myWorksButton.addEventListener("click", () => {
+        //     window.location.href = "myWorks.html";
+        // });
+        myWorks.appendChild(myWorksButton);
+        }
         // TODO : remplacer le lien login par le boutton Logout dans la barre de navigation
+        const logoutButton = document.getElementById("button");
+        logoutButton.textContent = "Logout";
+        logoutButton.className = "category_btn";
+        if (logoutButton) {
+        // logoutButton.style.display = "block";
+        logoutButton.addEventListener("click", () => {
+            localStorage.removeItem("token"); // Supprimer le jeton de localStorage
+            window.location.reload(); // Recharger la page pour refletter le changement
+        });
+
+        loginData.replaceWith(logoutButton); // Remplacer le lien login par le boutton Logout
+        }
 
     }
 
