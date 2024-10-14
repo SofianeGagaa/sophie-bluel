@@ -29,7 +29,7 @@ const getData = async (type) => {
 }
 
 
-// *** La fonction displayWorks est conçue pour récupérer une liste d'œuvres (via getData("works")), puis pour chaque œuvre, créer dynamiquement des éléments HTML (<figure>, <img>, <figcaption>), les configurer avec les données de l'œuvre (image et titre), et enfin les ajouter dans un élément de la page appelé gallery. Cela permet d'afficher une galerie d'images avec des titres associés sur une page web. ***//
+// *** La fonction displayWorks est conçue pour récupérer une liste de works (via getData("works")), puis pour chaque woerk, créer dynamiquement des éléments HTML (<figure>, <img>, <figcaption>), les configurer avec les données du work (image et titre), et enfin les ajouter dans un élément de la page appelé gallery. Cela permet d'afficher une galerie d'images avec des titres associés sur une page web. ***//
 const displayWorks = async () => {
     works = await getData("works");
 
@@ -69,11 +69,26 @@ const displayFilters = async () => {
 
 // *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
 const logout = () => {
+    console.log("logout()");
     localStorage.removeItem("token");
     window.location.reload();
 }
 
+const createLogoutBtn = () => {
+    console.log("createLogoutBtn()");
+    const logoutButton = document.createElement("button");
+    const loginLink = document.querySelector("[href='login.html']");
+
+    if (logoutButton && loginLink) {
+        logoutButton.textContent = "Logout";
+        logoutButton.className = "category_btn";
+        logoutButton.addEventListener("click", logout);
+        loginLink.replaceWith(logoutButton);
+    }
+}
+
 const checkToken = () => {
+    console.log("checkToken()"); 
     const token = localStorage.getItem("token");
     // Si le jeton n'est pas dans le localStorage, on affiche les filtres
     if (!token) {
@@ -81,10 +96,13 @@ const checkToken = () => {
         
     } else {
     // Si le jeton est dans le localStorage, on affiche les projets
-        // TODO : afficher la barre noire mode édition
-        const editButton = document.getElementById("edit");
+        // TODO : Ajouter l'icone fa fa-pen-to-square dans le if
+        const editButton = document.createElement("aside");
+        
         if (editButton) {
-        editButton.style.display = "block";
+            editButton.textContent = "Mode edition";
+            editButton.className = "edit-mode";
+            document.body.insertAdjacentElement("afterbegin", editButton);
         }
         // TODO : afficher le bouton modifier à coté du titre mes projets
         const myWorks = document.getElementById("categories");
@@ -97,19 +115,8 @@ const checkToken = () => {
         // });
         myWorks.appendChild(myWorksButton);
         }
-        // TODO : remplacer le lien login par le boutton Logout dans la barre de navigation
-        const logoutButton = document.getElementById("button");
-        logoutButton.textContent = "Logout";
-        logoutButton.className = "category_btn";
-        if (logoutButton) {
-        // logoutButton.style.display = "block";
-        logoutButton.addEventListener("click", () => {
-            localStorage.removeItem("token"); // Supprimer le jeton de localStorage
-            window.location.reload(); // Recharger la page pour refletter le changement
-        });
-
-        loginData.replaceWith(logoutButton); // Remplacer le lien login par le boutton Logout
-        }
+        // TODO : OK
+        createLogoutBtn();
 
     }
 

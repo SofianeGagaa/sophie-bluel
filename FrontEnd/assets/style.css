@@ -205,3 +205,8 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+
+.edit-mode {
+	background-color: #000;
+	color: #fff;
+}
