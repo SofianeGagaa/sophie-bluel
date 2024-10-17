@@ -143,6 +143,13 @@ li:hover {
 	width: 100%;
 
 }
+
+.filter {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1em;
+}
+
 #contact {
 	width: 50%;
 margin: auto;
@@ -209,4 +216,11 @@ footer nav ul {
 .edit-mode {
 	background-color: #000;
 	color: #fff;
+	width: 100%;
+	height: 59px;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2em;
 }
