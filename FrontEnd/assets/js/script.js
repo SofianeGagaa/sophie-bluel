@@ -98,24 +98,24 @@ const checkToken = () => {
 
         // Récupérer lélément mes projets (#categories) et ajouter le bouton modifier
         // TODO : afficher le bouton modifier à coté du titre mes projets
-        const myWorks = document.getElementById
-        ("categories");
-        myWorks.appendChild(myWorksButton);
-        if (myWorks) {
-            const myWorksButton = document.createElement("button");
-            myWorksButton.textContent = "Modifier";
-            myWorksButton.className = "category_btn";
+        // const myWorks = document.getElementById
+        // ("categories");
+        categoriesElements.appendChild("all-works");
+        if (categoriesElements) {
+            const categoriesElementsButton = document.createElement("button");
+            categoriesElementsButton.textContent = "Modifier";
+            categoriesElementsButton.className = "category_btn";
 
             // Ajout d'une icône fa fa-pen-to-square dans le bouton modifier
             const modifyIcon = document.createElement("i");
             modifyIcon.className = "fa-solid fa-pen";
-            myWorksButton.insertBefore(modifyIcon, myWorksButton.firstChild);
+            categoriesElementsButton.insertBefore(modifyIcon, categoriesElementsButton.firstChild);
 
             // Ajouter un événement clic pour rediriger ou activer l'édition des projets
-            myWorksButton.addEventListener("click", () => {
+            categoriesElementsButton.addEventListener("click", () => {
                 console.log("Modifier clicked!");
                 editMode = true;
-                window.location.href = "myWorks.html";
+                window.location.href = "categories.html";
             });
 
         }
@@ -125,7 +125,7 @@ const checkToken = () => {
 
 }
 
-// ******** PRIMARY MODAL ********
+// ******** MODAL EDIT1 : "Ajouter une photo à la galerie photo ********
 
 /*** ouverture d'une fenetre de dialogue et preparation de son contenu  */
 
@@ -170,13 +170,17 @@ const closeModal = () => {
 }
 
 const returnModal = () => {
-    document.getElementById("overflow-modal").style.display = "none";
-    document.getElementById("overflow-modal").style.opacity = "0";
+    document.getElementById("overlay-modal").style.display = "none";
+    document.getElementById("overlay-modal").style.opacity = "0";
     document.getElementById(modal).style.display = "block";
     document.getElementById(modal).style.opacity = "1";
 }
 
-// ******** SECONDARY MODAL ********
+// ******** MODAL EDIT2: "Valider l'ajout de photos et vider le formulaire" ********
+
+
+
+// ******** MODAL EDIT3: "Valider l'ajout de photos Aprés avoir vider le formulaire" ********
 
 
 
