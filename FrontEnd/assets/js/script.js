@@ -3,7 +3,7 @@
 // ******** CONSTANTS ********
 const URL = "http://localhost:5678/api/";
 
-const gallery = document.querySelector(".gallery");
+
 
 const worksElements = document.getElementById("works");
 const categoriesElements = document.getElementById("categories");
@@ -24,7 +24,7 @@ const getData = async (type) => {
         return data;
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -33,6 +33,7 @@ const getData = async (type) => {
 // *** Ce code JavaScript est une fonction asynchrone qui permet d'afficher des filtres sous forme de boutons sur une page web. Ces filtres sont basés sur des catégories récupérées depuis une source externe. ***//
 const displayWorks = async () => {
     works = await getData("works");
+    // console.log(works);
 
     for (const work of works) {
         const figure = document.createElement("figure");
@@ -45,19 +46,24 @@ const displayWorks = async () => {
 
         figure.appendChild(img);
         figure.appendChild(figcaption);
-        gallery.appendChild(figure);
+        worksElements.appendChild(figure);
     }
+}
+
+const displayFilters = () => {
+    categories = getData("categories");
+    console.log(categories);
+
+
 }
 
 // *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
 const logout = () => {
-    console.log("logout()");
     localStorage.removeItem("token");
     window.location.reload();
 }
 
 const createLogoutBtn = () => {
-    console.log("createLogoutBtn()");
     const logoutButton = document.createElement("button");
     const loginLink = document.querySelector("[href='login.html']");
 
@@ -71,7 +77,6 @@ const createLogoutBtn = () => {
 
 // *** Vérifier si le Token d'authentification est présent dans le localStorage pour déterminer quelle interface doit être affichée ***//
 const checkToken = () => {
-    console.log("checkToken()");
     const token = localStorage.getItem("token");
     // Si le jeton n'est pas dans le localStorage, on affiche les filtres
     if (!token) {
@@ -98,27 +103,23 @@ const checkToken = () => {
 
         // Récupérer lélément mes projets (#categories) et ajouter le bouton modifier
         // TODO : afficher le bouton modifier à coté du titre mes projets
-        // const myWorks = document.getElementById
-        // ("categories");
-        categoriesElements.appendChild("all-works");
-        if (categoriesElements) {
-            const categoriesElementsButton = document.createElement("button");
-            categoriesElementsButton.textContent = "Modifier";
-            categoriesElementsButton.className = "category_btn";
 
-            // Ajout d'une icône fa fa-pen-to-square dans le bouton modifier
+
+     
+            const modifyButton = document.createElement("button");
             const modifyIcon = document.createElement("i");
-            modifyIcon.className = "fa-solid fa-pen";
-            categoriesElementsButton.insertBefore(modifyIcon, categoriesElementsButton.firstChild);
 
-            // Ajouter un événement clic pour rediriger ou activer l'édition des projets
-            categoriesElementsButton.addEventListener("click", () => {
-                console.log("Modifier clicked!");
-                editMode = true;
-                window.location.href = "categories.html";
-            });
+            modifyButton.textContent = "Modifier";
+            modifyButton.className = "modify-btn";
+            modifyIcon.className = "fa-solid fa-pen-to-square";
+            modifyButton.addEventListener("click", openModal);
+            
+            modifyButton.appendChild(modifyIcon);
+            document.querySelector("#portfolio h2").insertAdjacentElement("afterend",modifyButton);
 
-        }
+
+
+
         // TODO : OK
         createLogoutBtn();
     }
