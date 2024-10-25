@@ -19,9 +19,8 @@
   </head>
 
   <body>
+    <div></div>
 
-    <div ></div>
-    
     <header>
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
@@ -115,35 +114,40 @@
 						<figcaption>Hotel First Arte - New Delhi</figcaption>
 					</figure> -->
         <!-- </div> -->
-
-      
       </section>
 
       <ul id="categories" class="filter">
+        <li>
+          <button id="all" class="category-btn" data-category="">Tous</button>
+        </li>
+
       </ul>
 
-      <div id="works" class="gallery"></div>
+      <div id="works" class="gallery">
+
+      </div>
 
       <div id="modal" class="modal">
-			<div id="modal-content" class="modal">
-				<button id="close-modal" class="close">
-					<i class="fa-solid fa-xmark"></i>
-				</button>
+        <div id="modal-content" class="modal">
+          <button id="close-modal" class="close">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
 
-				<div id="modal-gallery">
-					<h2 class="modal-title">Galerie photo</h2>
-					<ul id="modal-images" class="modal-list"></ul>
-				</div>
+          <div id="modal-gallery">
+            <h2 class="modal-title">Galerie photo</h2>
+            <ul id="modal-images" class="modal-list">
 
-				<div id="modal-footer" class="modal">
-					<div>
-						<button id="add-photo">Ajouter une photo</button>
-						<button id="delete-photo">Supprimer une photo</button>
-					</div>
-				</div>
+            </ul>
+          </div>
 
-			</div>
-		</div>
+          <div id="modal-footer" class="modal">
+            <div>
+              <button id="add-photo">Ajouter une photo</button>
+              <button id="delete-photo">Supprimer une photo</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div id="modal-overlay" class="modal-overlay">
         <!-- Contenu de la seconde modale -->

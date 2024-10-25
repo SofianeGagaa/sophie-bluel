@@ -3,11 +3,10 @@
 // ******** CONSTANTS ********
 const URL = "http://localhost:5678/api/";
 
-
-
 const worksElements = document.getElementById("works");
 const categoriesElements = document.getElementById("categories");
-const filterElements = document.getElementById("filter");
+// const filterElements = document.getElementById("filter");
+const filtersElements = document.querySelectorAll(".category-btn");
 
 // ******** VARIABLES ********
 let works = [];
@@ -54,6 +53,13 @@ const displayFilters = () => {
     categories = getData("categories");
     console.log(categories);
 
+    for (const category of categories) {
+        const button = document.createElement("button");
+
+        button.textContent = category.name;
+        button.className = "category-btn";
+        categoriesElements.appendChild(button);
+    }
 
 }
 
