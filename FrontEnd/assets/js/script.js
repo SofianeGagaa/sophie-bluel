@@ -30,6 +30,8 @@ const getData = async (type) => {
 // *** La fonction displayWorks est conçue pour récupérer une liste de works (via getData("works")), puis pour chaque work, créer dynamiquement des éléments HTML (<figure>, <img>, <figcaption>), les configurer avec les données du work (image et titre), et enfin les ajouter dans un élément de la page appelé gallery. Cela permet d'afficher une galerie d'images avec des titres associés sur une page web. ***//
 
 // *** Ce code JavaScript est une fonction asynchrone qui permet d'afficher des filtres sous forme de boutons sur une page web. Ces filtres sont basés sur des catégories récupérées depuis une source externe. ***//
+
+/*** Afficher les projets ***/
 const displayWorks = async () => {
     works = await getData("works");
     // console.log(works);
@@ -49,18 +51,31 @@ const displayWorks = async () => {
     }
 }
 
-const displayFilters = () => {
+/*** Afficher les filtres des catégories ***/
+const displayCategories = () => {
     categories = getData("categories");
-    console.log(categories);
+    // console.log(categories);
+
+    const allButton = document.createElement("button");
+    allButton.textContent = "Tous";
+    allButton.className = "category-btn";
+    classFilters.appendChild(allButton);
+
+    allButton.addEventListener("click", () => {
+        displayWorks();
+    });
 
     for (const category of categories) {
-        const button = document.createElement("button");
+        const btnFilter = document.createElement("button");
 
-        button.textContent = category.name;
-        button.className = "category-btn";
-        categoriesElements.appendChild(button);
+        btnFilter.textContent = category.name;
+        btnFilter.className = "category-btn";
+        categoriesElements.appendChild(btnFilter);
+
+        btnFilter.addEventListener("click", () => {
+            displayWorksByCategory(category.name);
+        });
     }
-
 }
 
 // *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
@@ -75,7 +90,7 @@ const createLogoutBtn = () => {
 
     if (logoutButton && loginLink) {
         logoutButton.textContent = "Logout";
-        logoutButton.className = "category_btn";
+        logoutButton.className = "category-btn";
         logoutButton.addEventListener("click", logout);
         loginLink.replaceWith(logoutButton);
     }
@@ -86,7 +101,7 @@ const checkToken = () => {
     const token = localStorage.getItem("token");
     // Si le jeton n'est pas dans le localStorage, on affiche les filtres
     if (!token) {
-        displayFilters();
+        displayCategories();
 
     } else {
         // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
