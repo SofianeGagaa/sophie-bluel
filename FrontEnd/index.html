@@ -19,7 +19,7 @@
   </head>
 
   <body>
-    <div class="mode-edition .hide">
+    <div class="edit-mode .hide">
       <i class="fa-regular fa-pen-to-square"></i>
       <p>Mode edition</p>
     </div>
@@ -36,6 +36,7 @@
           </li>
           <li>
             <a href="login.html">login</a>
+            <a href="#" id="logout" class="hide" >logout</a>
           </li>
           <li>
             <img src="./assets/icons/instagram.png" alt="Instagram" />
@@ -69,31 +70,49 @@
         </article>
       </section>
 
-      <section id="portfolio">
-        <div id="modal" class="modal">
-          <div id="modal-content" class="modal">
-            <button id="close-modal" class="close">
-              <i class="fa-solid fa-xmark"></i>
+      <section id="portfolio" class="portfolio">
+
+        <dialog id="dialog">
+          <button class="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <!-- Contenu du dialog -->
+          <section id="modal-gallery" class="modal-gallery">
+            <h2 class="modal-title">Galerie photo</h2>
+            <button class="btn-back hide">
+              <i class="fa-solid fa-arrow-left"></i>
             </button>
-
-            <div id="modal-gallery">
-              <h2 class="modal-title">Galerie photo</h2>
-              <ul id="modal-images" class="modal-list"></ul>
+          
+            <div id="modal-content" class="modal-gallery">
+              <!-- Contenu de la modale dans la galerie -->
             </div>
 
-            <div id="modal-footer" class="modal">
-              <div>
-                <button id="add-photo">Ajouter une photo</button>
-                <button id="delete-photo">Supprimer une photo</button>
+            <div class="div-bar">
+              <!--  -->
+            </div>
+
+            <button id="btn-add" class="btn-add">
+                Ajouter une photo
+            </button>
+            <form id="imageInput" class="hide" enctype="multipart/form-data" method="post">
+              <div id="imageInput-container" class="hide">
+                <ima id="imageInput-image" src="" alt="">
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="modal-overlay" class="modal-overlay">
-          <!-- Contenu de la seconde modale -->
-        </div>
-      </section>
+              <input type="file" id="image" accept="image/*" name="image">
+              <i class="fa-regular fa-image"></i>
+              <label class="btn-image" for="image" aria-label="Ajouter une photo">+Ajouter une photo</label><br>
+              <p class="hide">jpg, png</p>
+              <label for="name">Titre</label><br>
+              <input type="text" id="titre" name="name"><br>
+              <label for="categories">Categorie</label><br>
+              <select name="categories" id="categories">
+                <option value="0">Objets</option>
+                <option value="2">Appartrements</option>
+                <option value="3">Hôtels et restaurants</option>
+              </select>
+            </form>
+          </section>
+        </dialog>
 
       <section class="mes-projets">
         <h2>Mes Projets</h2>
@@ -104,7 +123,7 @@
         </button>
       </section>
 
-      <ul id="categories" class="filter">
+      <ul id="categories" class="filters">
         <!-- Contenu du code HTML injecté -->
       </ul>
 
@@ -137,4 +156,5 @@
 
     <script src="./assets/js/script.js"></script>
   </body>
+  
 </html>

@@ -8,6 +8,8 @@ const categoriesElements = document.getElementById("categories");
 // const filterElements = document.getElementById("filter");
 const filtersElements = document.querySelectorAll(".category-btn");
 
+// const editMode = document.querySelector(".edit-mode");
+
 // ******** VARIABLES ********
 let works = [];
 let categories = [];
@@ -31,7 +33,9 @@ const getData = async (type) => {
 
 // *** Ce code JavaScript est une fonction asynchrone qui permet d'afficher des filtres sous forme de boutons sur une page web. Ces filtres sont basés sur des catégories récupérées depuis une source externe. ***//
 
-/*** Afficher les projets ***/
+/** Afficher les works ou les projets
+ * @param {Array} works
+*/
 const displayWorks = async () => {
     works = await getData("works");
     // console.log(works);
@@ -49,9 +53,11 @@ const displayWorks = async () => {
         figure.appendChild(figcaption);
         worksElements.appendChild(figure);
     }
-}
 
-/*** Afficher les filtres des catégories ***/
+    /**
+     * Afficher la cartégorie des filtres sous forme de boutons
+     * @param {Array} categories    
+     */
 const displayCategories = () => {
     categories = getData("categories");
     // console.log(categories);
@@ -62,7 +68,7 @@ const displayCategories = () => {
     classFilters.appendChild(allButton);
 
     allButton.addEventListener("click", () => {
-        displayWorks();
+        displayWorks(works);
     });
 
     for (const category of categories) {
@@ -107,7 +113,7 @@ const checkToken = () => {
         // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
 
         // Création du bouton de mode d'Édition
-        // TODO : Ajouter l'icone fa fa-pen-to-square dans le if
+        // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
         const editButton = document.createElement("aside");
 
         if (editButton) {
@@ -150,59 +156,75 @@ const checkToken = () => {
 // ******** MODAL EDIT1 : "Ajouter une photo à la galerie photo ********
 
 /*** ouverture d'une fenetre de dialogue et preparation de son contenu  */
+const dialog = document.querySelector("#modal");
+const openButton = document.querySelector("#add-photo");
+const closeButton = document.querySelector("#close-modal");
+const toggleModal = () => {
+    openButton.addEventListener("click", () => {
+        dialog.openModal();
+        dialog.className.toggle("active");
+        displayModalGallery(); 
+    });
 
-works.forEach((work) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-        <img src="${work.imageUrl}">
-        <span class = "delete><i class="fa-solid fa-trash-can"></i></span>
-    `;
-    ModalImages.appendChild(li);
-});
-const deleteWorks = document.getElementsByClassName("delete");
-const deleteBtn = [...deleteWorks];
+    closeButton.addEventListener("click", () => {
+        dialog.close();
+        dialog.className.toggle("active");
+    });
+} 
 
-for (let i = 0; i < deleteBtn.length; i++) {
-    deleteBtn[i].addEventListener("click", async function () {
-        if (confirm("Voulez-vous supprimer cette image ?")) {
+// works.forEach((work) => {
+//     const li = document.createElement("li");
+//     li.innerHTML = `
+//         <img src="${work.imageUrl}" alt="${work.title}">
+//         <span class = "delete"><i class="fa-solid fa-trash-can"></i></span>
+//     `;
+//     ModalImages.appendChild(li);
+// });
 
-            try {
-                const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-                    method: "DELETE",
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem("token")}`
-                    }
-                })
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    })
-}
+// const deleteWorks = document.getElementsByClassName("delete");
+// const deleteBtn = [...deleteWorks];
 
-const openModal = () => {
-    document.getElementById("modal").style.display = "block";
-    document.getElementById("modal").style.opacity = "1";    
-}
+// for (let i = 0; i < deleteBtn.length; i++) {
+//     deleteBtn[i].addEventListener("click", async function () {
+//         if (confirm("Voulez-vous supprimer cette image ?")) {
 
-const closeModal = () => {
-    document.getElementById("modal").style.display = "none";
-    document.getElementById("modal").style.opacity = "0";
-    document.getElementById("modal").style.transform = "translateY(-100%)";
-}
+//             try {
+//                 const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+//                     method: "DELETE",
+//                     headers: {
+//                         'Authorization': `Bearer ${localStorage.getItem("token")}`
+//                     }
+//                 })
+//             } catch (error) {
+//                 console.log(error);
+//             }
+//         }
+//     })
+// }
 
-const returnModal = () => {
-    document.getElementById("overlay-modal").style.display = "none";
-    document.getElementById("overlay-modal").style.opacity = "0";
-    document.getElementById(modal).style.display = "block";
-    document.getElementById(modal).style.opacity = "1";
-}
+// const openModal = () => {
+//     document.getElementById("modal").style.display = "block";
+//     document.getElementById("modal").style.opacity = "1";    
+// }
+
+// const closeModal = () => {
+//     document.getElementById("modal").style.display = "none";
+//     document.getElementById("modal").style.opacity = "0";
+//     document.getElementById("modal").style.transform = "translateY(-100%)";
+// }
+
+// const returnModal = () => {
+//     document.getElementById("overlay-modal").style.display = "none";
+//     document.getElementById("overlay-modal").style.opacity = "0";
+//     document.getElementById(modal).style.display = "block";
+//     document.getElementById(modal).style.opacity = "1";
+// }
 
 // ******** MODAL EDIT2: "Valider l'ajout de photos et vider le formulaire" ********
 
 
 
-// ******** MODAL EDIT3: "Valider l'ajout de photos Aprés avoir vider le formulaire" ********
+
 
 
 
