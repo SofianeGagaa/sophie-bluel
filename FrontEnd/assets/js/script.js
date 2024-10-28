@@ -58,81 +58,81 @@ const displayWorks = async () => {
      * Afficher la cartégorie des filtres sous forme de boutons
      * @param {Array} categories    
      */
-const displayCategories = () => {
-    categories = getData("categories");
-    // console.log(categories);
+    const displayCategories = () => {
+        categories = getData("categories");
+        // console.log(categories);
 
-    const allButton = document.createElement("button");
-    allButton.textContent = "Tous";
-    allButton.className = "category-btn";
-    classFilters.appendChild(allButton);
+        const allButton = document.createElement("button");
+        allButton.textContent = "Tous";
+        allButton.className = "category-btn";
+        classFilters.appendChild(allButton);
 
-    allButton.addEventListener("click", () => {
-        displayWorks(works);
-    });
-
-    for (const category of categories) {
-        const btnFilter = document.createElement("button");
-
-        btnFilter.textContent = category.name;
-        btnFilter.className = "category-btn";
-        categoriesElements.appendChild(btnFilter);
-
-        btnFilter.addEventListener("click", () => {
-            displayWorksByCategory(category.name);
+        allButton.addEventListener("click", () => {
+            displayWorks(works);
         });
-    }
-}
 
-// *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
-const logout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
-}
+        for (const category of categories) {
+            const btnFilter = document.createElement("button");
 
-const createLogoutBtn = () => {
-    const logoutButton = document.createElement("button");
-    const loginLink = document.querySelector("[href='login.html']");
+            btnFilter.textContent = category.name;
+            btnFilter.className = "category-btn";
+            categoriesElements.appendChild(btnFilter);
 
-    if (logoutButton && loginLink) {
-        logoutButton.textContent = "Logout";
-        logoutButton.className = "category-btn";
-        logoutButton.addEventListener("click", logout);
-        loginLink.replaceWith(logoutButton);
-    }
-}
-
-// *** Vérifier si le Token d'authentification est présent dans le localStorage pour déterminer quelle interface doit être affichée ***//
-const checkToken = () => {
-    const token = localStorage.getItem("token");
-    // Si le jeton n'est pas dans le localStorage, on affiche les filtres
-    if (!token) {
-        displayCategories();
-
-    } else {
-        // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
-
-        // Création du bouton de mode d'Édition
-        // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
-        const editButton = document.createElement("aside");
-
-        if (editButton) {
-            // Ajout de l'icône fa fa-pen-to-square
-            const editIcon = document.createElement("i");
-            editIcon.className = "fa-solid fa-pen-to-square";
-
-            // Ajout de l'icône et du texte dans le bouton de mode édition
-            editButton.textContent = "Mode edition";
-            editButton.className = "edit-mode";
-            editButton.insertBefore(editIcon, editButton.firstChild); // Ajout de l'icône avant le texte
-            document.body.insertAdjacentElement("afterbegin", editButton); // Ajout du bouton de mode d'édition en haut de la page
+            btnFilter.addEventListener("click", () => {
+                displayWorksByCategory(category.name);
+            });
         }
+    }
 
-        // Récupérer lélément mes projets (#categories) et ajouter le bouton modifier
-        // TODO : afficher le bouton modifier à coté du titre mes projets
+    // *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
+    const logout = () => {
+        localStorage.removeItem("token");
+        window.location.reload();
+    }
+
+    const createLogoutBtn = () => {
+        const logoutButton = document.createElement("button");
+        const loginLink = document.querySelector("[href='login.html']");
+
+        if (logoutButton && loginLink) {
+            logoutButton.textContent = "Logout";
+            logoutButton.className = "category-btn";
+            logoutButton.addEventListener("click", logout);
+            loginLink.replaceWith(logoutButton);
+        }
+    }
+
+    // *** Vérifier si le Token d'authentification est présent dans le localStorage pour déterminer quelle interface doit être affichée ***//
+    const checkToken = () => {
+        const token = localStorage.getItem("token");
+        // Si le jeton n'est pas dans le localStorage, on affiche les filtres
+        if (!token) {
+            displayCategories();
+
+        } else {
+            // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
+
+            // Création du bouton de mode d'Édition
+            // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
+            const editButton = document.createElement("aside");
+
+            if (editButton) {
+                // Ajout de l'icône fa fa-pen-to-square
+                const editIcon = document.createElement("i");
+                editIcon.className = "fa-solid fa-pen-to-square";
+
+                // Ajout de l'icône et du texte dans le bouton de mode édition
+                editButton.textContent = "Mode edition";
+                editButton.className = "edit-mode";
+                editButton.insertBefore(editIcon, editButton.firstChild); // Ajout de l'icône avant le texte
+                document.body.insertAdjacentElement("afterbegin", editButton); // Ajout du bouton de mode d'édition en haut de la page
+            }
+
+            // Récupérer lélément mes projets (#categories) et ajouter le bouton modifier
+            // TODO : afficher le bouton modifier à coté du titre mes projets
 
 
-     
+
             const modifyButton = document.createElement("button");
             const modifyIcon = document.createElement("i");
 
@@ -140,96 +140,169 @@ const checkToken = () => {
             modifyButton.className = "modify-btn";
             modifyIcon.className = "fa-solid fa-pen-to-square";
             modifyButton.addEventListener("click", openModal);
-            
+
             modifyButton.appendChild(modifyIcon);
-            document.querySelector("#portfolio h2").insertAdjacentElement("afterend",modifyButton);
+            document.querySelector("#portfolio h2").insertAdjacentElement("afterend", modifyButton);
 
 
 
 
-        // TODO : OK
-        createLogoutBtn();
+            // TODO : OK
+            createLogoutBtn();
+        }
+
     }
 
+    // ******** MODALS ********
+
+const dialog = document.querySelector("#modal");
+const openButton = document.querySelector("dialog + .mes-projets > button");
+const closeButton = document.querySelector("#close-modal");
+
+const toggleModal = () => {
+        openButton.addEventListener("click", () => {
+            dialog.displayModal();
+            dialog.className.toggle("active");
+            generateModalGallery();
+        });
+
+        closeButton.addEventListener("click", () => {
+            dialog.close();
+            dialog.className.toggle("active");
+        });
 }
 
-// ******** MODAL EDIT1 : "Ajouter une photo à la galerie photo ********
+const generateModalGallery = () => {
+    modalGallery.innerHTML = "";
 
-/*** ouverture d'une fenetre de dialogue et preparation de son contenu  */
-const dialog = document.querySelector("#modal");
-const openButton = document.querySelector("#add-photo");
-const closeButton = document.querySelector("#close-modal");
-const toggleModal = () => {
-    openButton.addEventListener("click", () => {
-        dialog.openModal();
-        dialog.className.toggle("active");
-        displayModalGallery(); 
-    });
+    for (let i = 0; i < works.length; i++) {
+        const figure = works[i];
 
-    closeButton.addEventListener("click", () => {
-        dialog.close();
-        dialog.className.toggle("active");
-    });
-} 
+        const galleryElement = document.createElement("figure");
+        galleryElement.className.add("gallery-element");
+        galleryElement.innerHTML = `
+        <img src="${figure.imageUrl}" alt="${figure.title}">
+        <button class="btn-delete" data-id="${figure.id}"><i class="fa-solid fa-trash-can"></i></button>`;
 
-// works.forEach((work) => {
-//     const li = document.createElement("li");
-//     li.innerHTML = `
-//         <img src="${work.imageUrl}" alt="${work.title}">
-//         <span class = "delete"><i class="fa-solid fa-trash-can"></i></span>
-//     `;
-//     ModalImages.appendChild(li);
-// });
+        modalGallery.appendChild(galleryElement);
 
-// const deleteWorks = document.getElementsByClassName("delete");
-// const deleteBtn = [...deleteWorks];
+        galleryElement.querySelector(".btn-delete").addEventListener("click", () => {
+            deleteWork(figure.id);
 
-// for (let i = 0; i < deleteBtn.length; i++) {
-//     deleteBtn[i].addEventListener("click", async function () {
-//         if (confirm("Voulez-vous supprimer cette image ?")) {
+        });
+    }
+    addButton.addEventListener("click", generateModalForm);
+}
 
-//             try {
-//                 const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-//                     method: "DELETE",
-//                     headers: {
-//                         'Authorization': `Bearer ${localStorage.getItem("token")}`
-//                     }
-//                 })
-//             } catch (error) {
-//                 console.log(error);
-//             }
-//         }
-//     })
-// }
+const deleteWork = async (id) => {
+const deleteBtn = [...deleteWorks];
 
-// const openModal = () => {
-//     document.getElementById("modal").style.display = "block";
-//     document.getElementById("modal").style.opacity = "1";    
-// }
+    for (let i = 0; i < deleteBtn.length; i++) {
+        deleteBtn[i].addEventListener("click", async function () {
+            if (confirm("Voulez-vous supprimer cette image ?")) {
 
-// const closeModal = () => {
-//     document.getElementById("modal").style.display = "none";
-//     document.getElementById("modal").style.opacity = "0";
-//     document.getElementById("modal").style.transform = "translateY(-100%)";
-// }
+                try {
+                    const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                        method: "DELETE",
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem("token")}`
+                        }
+                    })
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        })
+    }
 
-// const returnModal = () => {
-//     document.getElementById("overlay-modal").style.display = "none";
-//     document.getElementById("overlay-modal").style.opacity = "0";
-//     document.getElementById(modal).style.display = "block";
-//     document.getElementById(modal).style.opacity = "1";
-// }
+    const displayModal = () => {
+        document.getElementById("modal").style.display = "block";
+        document.getElementById("modal").style.opacity = "1";
+        document.getElementById("overlay-modal").style.display = "block";
+        document.getElementById("overlay-modal").style.opacity = "1";
 
-// ******** MODAL EDIT2: "Valider l'ajout de photos et vider le formulaire" ********
+        const modalGallery = document.querySelector("#modal-gallery");
+        modalGallery.innerHTML = "";
+        works.forEach((work) => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+            <img src="${work.imageUrl}" alt="${work.title}">
+            <span class = "delete"><i class="fa-solid fa-trash-can"></i></span>
+        `;
+            modalGallery.appendChild(li);
+        });
+
+        const deleteWorks = document.getElementsByClassName("delete");
+        const deleteBtn = [...deleteWorks];
+
+        for (let i = 0; i < deleteBtn.length; i++) {
+            deleteBtn[i].addEventListener("click", async function () {
+                if (confirm("Voulez-vous supprimer cette image ?")) {
+
+                    try {
+                        const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                            method: "DELETE",
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem("token")}`
+                            })
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+        }
+    }
+
+    const closeModal = () => {
+        document.getElementById("modal").style.display = "none";
 
 
+        const deleteWorks = document.getElementsByClassName("delete");
+        const deleteBtn = [...deleteWorks];
 
+        for (let i = 0; i < deleteBtn.length; i++) {
+            deleteBtn[i].addEventListener("click", async function () {
+                if (confirm("Voulez-vous supprimer cette image ?")) {
 
+                    try {
+                        const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                            method: "DELETE",
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem("token")}`
+                            })
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+        }
 
+        const closeModal = () => {
+            document.getElementById("modal").style.display = "none";
 
+            const deleteWorks = document.getElementsByClassName("delete");
+            const deleteBtn = [...deleteWorks];
 
+            for (let i = 0; i < deleteBtn.length; i++) {
+                deleteBtn[i].addEventListener("click", async function () {
+                    if (confirm("Voulez-vous supprimer cette image ?")) {
 
-// ******** MAIN CODE ********
+                        try {
+                            const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                            }
+                        }
 
-checkToken();
-displayWorks();
+                        catch (error) {
+                            console.log(error);
+                        }
+                    }
+                }
+            } 
+    }
+
+                    
+                    // ******** MAIN CODE ********
+
+                    checkToken();
+                    displayWorks();
