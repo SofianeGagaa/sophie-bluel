@@ -4,9 +4,8 @@
 const URL = "http://localhost:5678/api/";
 
 const worksElements = document.getElementById("works");
-const categoriesElements = document.getElementById("categories");
+const filtersElements = document.getElementById("filters");
 // const filterElements = document.getElementById("filter");
-const filtersElements = document.querySelectorAll(".category-btn");
 
 // const editMode = document.querySelector(".edit-mode");
 
@@ -53,123 +52,134 @@ const displayWorks = async () => {
         figure.appendChild(figcaption);
         worksElements.appendChild(figure);
     }
+}
 
-    /**
-     * Afficher la cartégorie des filtres sous forme de boutons
-     * @param {Array} categories    
-     */
-    const displayCategories = () => {
-        categories = getData("categories");
-        // console.log(categories);
+/**
+ * Afficher la cartégorie des filtres sous forme de boutons
+ * @param {Array} categories    
+ */
+const displayCategories = async () => {
+    categories = await getData("categories");
+    console.log(categories);
+    console.log(filtersElements);
+    const allListElt = document.createElement("li");
+    const allButton = document.createElement("button");
 
-        const allButton = document.createElement("button");
-        allButton.textContent = "Tous";
-        allButton.className = "category-btn";
-        classFilters.appendChild(allButton);
+    allButton.textContent = "Tous";
+    allButton.className = "category-btn";
 
-        allButton.addEventListener("click", () => {
-            displayWorks(works);
+    allButton.addEventListener("click", () => {
+        displayWorks(works);
+    });
+    console.log(allButton);
+
+    
+
+    allListElt.appendChild(allButton);
+    console.log(allListElt);
+    filtersElements.appendChild(allListElt);
+
+
+console.log(categories);
+    for (const category of categories) {
+        const btnFilter = document.createElement("button");
+
+        btnFilter.textContent = category.name;
+        btnFilter.className = "category-btn";
+        filtersElements.appendChild(btnFilter);
+
+        btnFilter.addEventListener("click", () => {
+            displayWorksByCategory(category.name);
         });
-
-        for (const category of categories) {
-            const btnFilter = document.createElement("button");
-
-            btnFilter.textContent = category.name;
-            btnFilter.className = "category-btn";
-            categoriesElements.appendChild(btnFilter);
-
-            btnFilter.addEventListener("click", () => {
-                displayWorksByCategory(category.name);
-            });
-        }
     }
+}
 
-    // *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
-    const logout = () => {
-        localStorage.removeItem("token");
-        window.location.reload();
+// *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
+const logout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+}
+
+const createLogoutBtn = () => {
+    const logoutButton = document.createElement("button");
+    const loginLink = document.querySelector("[href='login.html']");
+
+    if (logoutButton && loginLink) {
+        logoutButton.textContent = "Logout";
+        logoutButton.className = "category-btn";
+        logoutButton.addEventListener("click", logout);
+        loginLink.replaceWith(logoutButton);
     }
+}
 
-    const createLogoutBtn = () => {
-        const logoutButton = document.createElement("button");
-        const loginLink = document.querySelector("[href='login.html']");
+// *** Vérifier si le Token d'authentification est présent dans le localStorage pour déterminer quelle interface doit être affichée ***//
+const checkToken = () => {
+    const token = localStorage.getItem("token");
+    // Si le jeton n'est pas dans le localStorage, on affiche les filtres
+    if (!token) {
+        displayCategories();
 
-        if (logoutButton && loginLink) {
-            logoutButton.textContent = "Logout";
-            logoutButton.className = "category-btn";
-            logoutButton.addEventListener("click", logout);
-            loginLink.replaceWith(logoutButton);
-        }
-    }
+    } else {
+        // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
 
-    // *** Vérifier si le Token d'authentification est présent dans le localStorage pour déterminer quelle interface doit être affichée ***//
-    const checkToken = () => {
-        const token = localStorage.getItem("token");
-        // Si le jeton n'est pas dans le localStorage, on affiche les filtres
-        if (!token) {
-            displayCategories();
+        // Création du bouton de mode d'Édition
+        // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
+        const editButton = document.createElement("aside");
 
-        } else {
-            // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
+        if (editButton) {
+            // Ajout de l'icône fa fa-pen-to-square
+            const editIcon = document.createElement("i");
+            editIcon.className = "fa-solid fa-pen-to-square";
 
-            // Création du bouton de mode d'Édition
-            // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
-            const editButton = document.createElement("aside");
-
-            if (editButton) {
-                // Ajout de l'icône fa fa-pen-to-square
-                const editIcon = document.createElement("i");
-                editIcon.className = "fa-solid fa-pen-to-square";
-
-                // Ajout de l'icône et du texte dans le bouton de mode édition
-                editButton.textContent = "Mode edition";
-                editButton.className = "edit-mode";
-                editButton.insertBefore(editIcon, editButton.firstChild); // Ajout de l'icône avant le texte
-                document.body.insertAdjacentElement("afterbegin", editButton); // Ajout du bouton de mode d'édition en haut de la page
-            }
-
-            // Récupérer lélément mes projets (#categories) et ajouter le bouton modifier
-            // TODO : afficher le bouton modifier à coté du titre mes projets
-
-
-
-            const modifyButton = document.createElement("button");
-            const modifyIcon = document.createElement("i");
-
-            modifyButton.textContent = "Modifier";
-            modifyButton.className = "modify-btn";
-            modifyIcon.className = "fa-solid fa-pen-to-square";
-            modifyButton.addEventListener("click", openModal);
-
-            modifyButton.appendChild(modifyIcon);
-            document.querySelector("#portfolio h2").insertAdjacentElement("afterend", modifyButton);
-
-
-
-
-            // TODO : OK
-            createLogoutBtn();
+            // Ajout de l'icône et du texte dans le bouton de mode édition
+            editButton.textContent = "Mode edition";
+            editButton.className = "edit-mode";
+            editButton.insertBefore(editIcon, editButton.firstChild); // Ajout de l'icône avant le texte
+            document.body.insertAdjacentElement("afterbegin", editButton); // Ajout du bouton de mode d'édition en haut de la page
         }
 
+        // Récupérer lélément mes projets (#categories) et ajouter le bouton modifier
+        // TODO : afficher le bouton modifier à coté du titre mes projets
+
+
+
+        const modifyButton = document.createElement("button");
+        const modifyIcon = document.createElement("i");
+
+        modifyButton.textContent = "Modifier";
+        modifyButton.className = "modify-btn";
+        modifyIcon.className = "fa-solid fa-pen-to-square";
+        // modifyButton.addEventListener("click", openModal);
+
+        modifyButton.appendChild(modifyIcon);
+        document.querySelector("#portfolio h2").insertAdjacentElement("afterend", modifyButton);
+
+
+
+
+        // TODO : OK
+        createLogoutBtn();
     }
 
-    // ******** MODALS ********
+}
+
+// ******** MODALS ********
 
 const dialog = document.querySelector("#modal");
 const openButton = document.querySelector("dialog + .mes-projets > button");
 const closeButton = document.querySelector("#close-modal");
 
 const toggleModal = () => {
-        openButton.addEventListener("click", () => {
-            dialog.displayModal();
-            dialog.className.toggle("active");
-            generateModalGallery();
-        });
+    openButton.addEventListener("click", () => {
+        dialog.displayModal();
+        dialog.className.toggle("active");
+        generateModalGallery();
+    });
 
-        closeButton.addEventListener("click", () => {
-            dialog.close();
-            dialog.className.toggle("active");
-        });
+    closeButton.addEventListener("click", () => {
+        dialog.close();
+        dialog.className.toggle("active");
+    });
 }
 
 const generateModalGallery = () => {
@@ -195,7 +205,7 @@ const generateModalGallery = () => {
 }
 
 const deleteWork = async (id) => {
-const deleteBtn = [...deleteWorks];
+    const deleteBtn = [...deleteWorks];
 
     for (let i = 0; i < deleteBtn.length; i++) {
         deleteBtn[i].addEventListener("click", async function () {
@@ -214,6 +224,7 @@ const deleteBtn = [...deleteWorks];
             }
         })
     }
+}
 
 // const displayModal = () => {
 //         document.getElementById("modal").style.display = "block";
@@ -301,8 +312,8 @@ const deleteBtn = [...deleteWorks];
 //             } 
 // }
 
-                    
-                    // ******** MAIN CODE ********
 
-                    checkToken();
-                    displayWorks();
+// ******** MAIN CODE ********
+
+checkToken();
+displayWorks();
