@@ -215,91 +215,91 @@ const deleteBtn = [...deleteWorks];
         })
     }
 
-    const displayModal = () => {
-        document.getElementById("modal").style.display = "block";
-        document.getElementById("modal").style.opacity = "1";
-        document.getElementById("overlay-modal").style.display = "block";
-        document.getElementById("overlay-modal").style.opacity = "1";
+// const displayModal = () => {
+//         document.getElementById("modal").style.display = "block";
+//         document.getElementById("modal").style.opacity = "1";
+//         document.getElementById("overlay-modal").style.display = "block";
+//         document.getElementById("overlay-modal").style.opacity = "1";
 
-        const modalGallery = document.querySelector("#modal-gallery");
-        modalGallery.innerHTML = "";
-        works.forEach((work) => {
-            const li = document.createElement("li");
-            li.innerHTML = `
-            <img src="${work.imageUrl}" alt="${work.title}">
-            <span class = "delete"><i class="fa-solid fa-trash-can"></i></span>
-        `;
-            modalGallery.appendChild(li);
-        });
+//         const modalGallery = document.querySelector("#modal-gallery");
+//         modalGallery.innerHTML = "";
+//         works.forEach((work) => {
+//             const li = document.createElement("li");
+//             li.innerHTML = `
+//             <img src="${work.imageUrl}" alt="${work.title}">
+//             <span class = "delete"><i class="fa-solid fa-trash-can"></i></span>
+//         `;
+//             modalGallery.appendChild(li);
+//         }); }
+//     }
 
-        const deleteWorks = document.getElementsByClassName("delete");
-        const deleteBtn = [...deleteWorks];
+// const deleteWorks = document.getElementsByClassName("delete");
+// const deleteBtn = [...deleteWorks];
 
-        for (let i = 0; i < deleteBtn.length; i++) {
-            deleteBtn[i].addEventListener("click", async function () {
-                if (confirm("Voulez-vous supprimer cette image ?")) {
+//         for (let i = 0; i < deleteBtn.length; i++) {
+//             deleteBtn[i].addEventListener("click", async function () {
+//                 if (confirm("Voulez-vous supprimer cette image ?")) {
 
-                    try {
-                        const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-                            method: "DELETE",
-                            headers: {
-                                'Authorization': `Bearer ${localStorage.getItem("token")}`
-                            })
-                    } catch (error) {
-                        console.log(error);
-                    }
-                }
-            }
-        }
-    }
+//                     try {
+//                         const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+//                             method: "DELETE",
+//                             headers: {
+//                                 'Authorization': `Bearer ${localStorage.getItem("token")}`
+//                             })
+//                     } catch (error) {
+//                         console.log(error);
+//                     }
+//                 }
+//             }
+// }
 
-    const closeModal = () => {
-        document.getElementById("modal").style.display = "none";
+// const closeModal = () => {
+//         document.getElementById("modal").style.display = "none";
 
 
-        const deleteWorks = document.getElementsByClassName("delete");
-        const deleteBtn = [...deleteWorks];
+//         const deleteWorks = document.getElementsByClassName("delete");
+//         const deleteBtn = [...deleteWorks];
 
-        for (let i = 0; i < deleteBtn.length; i++) {
-            deleteBtn[i].addEventListener("click", async function () {
-                if (confirm("Voulez-vous supprimer cette image ?")) {
+//         for (let i = 0; i < deleteBtn.length; i++) {
+//             deleteBtn[i].addEventListener("click", async function () {
+//                 if (confirm("Voulez-vous supprimer cette image ?")) {
 
-                    try {
-                        const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-                            method: "DELETE",
-                            headers: {
-                                'Authorization': `Bearer ${localStorage.getItem("token")}`
-                            })
-                    }
-                    catch (error) {
-                        console.log(error);
-                    }
-                }
-            }
-        }
+//                     try {
+//                         const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+//                             method: "DELETE",
+//                             headers: {
+//                                 'Authorization': `Bearer ${localStorage.getItem("token")}`
+//                             })
+//                     }
+//                     catch (error) {
+//                         console.log(error);
+//                     }
+//                 }
+//             }
+// }
 
-        const closeModal = () => {
-            document.getElementById("modal").style.display = "none";
+// const closeModal = () => {
+//             document.getElementById("modal").style.display = "none";
 
-            const deleteWorks = document.getElementsByClassName("delete");
-            const deleteBtn = [...deleteWorks];
+//             const deleteWorks = document.getElementsByClassName("delete");
+//             const deleteBtn = [...deleteWorks];
 
-            for (let i = 0; i < deleteBtn.length; i++) {
-                deleteBtn[i].addEventListener("click", async function () {
-                    if (confirm("Voulez-vous supprimer cette image ?")) {
+//             for (let i = 0; i < deleteBtn.length; i++) {
+//                 deleteBtn[i].addEventListener("click", async function () {
+//                     if (confirm("Voulez-vous supprimer cette image ?")) {
 
-                        try {
-                            const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-                            }
-                        }
+//                         try {
+//                             const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+//                             }
+//                         }
 
-                        catch (error) {
-                            console.log(error);
-                        }
-                    }
-                }
-            } 
-    }
+//                         catch (error) {
+//                             console.log(error);
+//                         }
+//                     }
+//                 }
+//             } 
+// }
 
                     
                     // ******** MAIN CODE ********
