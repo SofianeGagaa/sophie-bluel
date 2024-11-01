@@ -30,6 +30,8 @@ const getData = async (type) => {
 
 // *** La fonction displayWorks est conçue pour récupérer une liste de works (via getData("works")), puis pour chaque work, créer dynamiquement des éléments HTML (<figure>, <img>, <figcaption>), les configurer avec les données du work (image et titre), et enfin les ajouter dans un élément de la page appelé gallery. Cela permet d'afficher une galerie d'images avec des titres associés sur une page web. ***//
 
+// ******** DISPLAY WORKS (PROJETS) ********//
+
 // *** Ce code JavaScript est une fonction asynchrone qui permet d'afficher des filtres sous forme de boutons sur une page web. Ces filtres sont basés sur des catégories récupérées depuis une source externe. ***//
 
 /** Afficher les works ou les projets
@@ -60,9 +62,10 @@ const displayWorks = async () => {
  */
 const displayCategories = async () => {
     categories = await getData("categories");
-    console.log(categories);
-    console.log(filtersElements);
+    // console.log(categories);
+
     const allListElt = document.createElement("li");
+    // console.log(allListElt);
     const allButton = document.createElement("button");
 
     allButton.textContent = "Tous";
@@ -71,28 +74,33 @@ const displayCategories = async () => {
     allButton.addEventListener("click", () => {
         displayWorks(works);
     });
-    console.log(allButton);
-
-    
+    // console.log(allButton);
 
     allListElt.appendChild(allButton);
-    console.log(allListElt);
+    // console.log(allListElt);
     filtersElements.appendChild(allListElt);
+    // console.log(filtersElements);
 
-
-console.log(categories);
     for (const category of categories) {
-        const btnFilter = document.createElement("button");
+        const btnFiltered = document.createElement("button");
 
-        btnFilter.textContent = category.name;
-        btnFilter.className = "category-btn";
-        filtersElements.appendChild(btnFilter);
+        btnFiltered.textContent = category.name;
+        btnFiltered.classList.add = "category-btn";
+        filtersElements.appendChild(btnFiltered) ;
 
-        btnFilter.addEventListener("click", () => {
-            displayWorksByCategory(category.name);
+        btnFiltered.addEventListener("click", () => {
+            displayWorksByCategory(category.id);
         });
+        filtersElements.appendChild(btnFiltered);
+
     }
 }
+
+function displayWorksByCategory(categoryId) {
+    const filteredWorks = works.filter((work) => work.categoryId === categoryId);
+    displayWorks(filteredWorks);
+
+} 
 
 // *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
 const logout = () => {
@@ -165,66 +173,66 @@ const checkToken = () => {
 
 // ******** MODALS ********
 
-const dialog = document.querySelector("#modal");
-const openButton = document.querySelector("dialog + .mes-projets > button");
-const closeButton = document.querySelector("#close-modal");
+// const dialog = document.querySelector("#modal");
+// const openButton = document.querySelector("dialog + .mes-projets > button");
+// const closeButton = document.querySelector("#close-modal");
 
-const toggleModal = () => {
-    openButton.addEventListener("click", () => {
-        dialog.displayModal();
-        dialog.className.toggle("active");
-        generateModalGallery();
-    });
+// const toggleModal = () => {
+//     openButton.addEventListener("click", () => {
+//         dialog.displayModal();
+//         dialog.className.toggle("active");
+//         generateModalGallery();
+//     });
 
-    closeButton.addEventListener("click", () => {
-        dialog.close();
-        dialog.className.toggle("active");
-    });
-}
+//     closeButton.addEventListener("click", () => {
+//         dialog.close();
+//         dialog.className.toggle("active");
+//     });
+// }
 
-const generateModalGallery = () => {
-    modalGallery.innerHTML = "";
+// const generateModalGallery = () => {
+//     modalGallery.innerHTML = "";
 
-    for (let i = 0; i < works.length; i++) {
-        const figure = works[i];
+//     for (let i = 0; i < works.length; i++) {
+//         const figure = works[i];
 
-        const galleryElement = document.createElement("figure");
-        galleryElement.className.add("gallery-element");
-        galleryElement.innerHTML = `
-        <img src="${figure.imageUrl}" alt="${figure.title}">
-        <button class="btn-delete" data-id="${figure.id}"><i class="fa-solid fa-trash-can"></i></button>`;
+//         const galleryElement = document.createElement("figure");
+//         galleryElement.className.add("gallery-element");
+//         galleryElement.innerHTML = `
+//         <img src="${figure.imageUrl}" alt="${figure.title}">
+//         <button class="btn-delete" data-id="${figure.id}"><i class="fa-solid fa-trash-can"></i></button>`;
 
-        modalGallery.appendChild(galleryElement);
+//         modalGallery.appendChild(galleryElement);
 
-        galleryElement.querySelector(".btn-delete").addEventListener("click", () => {
-            deleteWork(figure.id);
+//         galleryElement.querySelector(".btn-delete").addEventListener("click", () => {
+//             deleteWork(figure.id);
 
-        });
-    }
-    addButton.addEventListener("click", generateModalForm);
-}
+//         });
+//     }
+//     addButton.addEventListener("click", generateModalForm);
+// }
 
-const deleteWork = async (id) => {
-    const deleteBtn = [...deleteWorks];
+// const deleteWork = async (id) => {
+//     const deleteBtn = [...deleteWorks];
 
-    for (let i = 0; i < deleteBtn.length; i++) {
-        deleteBtn[i].addEventListener("click", async function () {
-            if (confirm("Voulez-vous supprimer cette image ?")) {
+//     for (let i = 0; i < deleteBtn.length; i++) {
+//         deleteBtn[i].addEventListener("click", async function () {
+//             if (confirm("Voulez-vous supprimer cette image ?")) {
 
-                try {
-                    const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-                        method: "DELETE",
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem("token")}`
-                        }
-                    })
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        })
-    }
-}
+//                 try {
+//                     const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+//                         method: "DELETE",
+//                         headers: {
+//                             'Authorization': `Bearer ${localStorage.getItem("token")}`
+//                         }
+//                     })
+//                 } catch (error) {
+//                     console.log(error);
+//                 }
+//             }
+//         })
+//     }
+// }
 
 // const displayModal = () => {
 //         document.getElementById("modal").style.display = "block";
@@ -264,53 +272,10 @@ const deleteWork = async (id) => {
 //             }
 // }
 
-// const closeModal = () => {
-//         document.getElementById("modal").style.display = "none";
 
 
-//         const deleteWorks = document.getElementsByClassName("delete");
-//         const deleteBtn = [...deleteWorks];
 
-//         for (let i = 0; i < deleteBtn.length; i++) {
-//             deleteBtn[i].addEventListener("click", async function () {
-//                 if (confirm("Voulez-vous supprimer cette image ?")) {
 
-//                     try {
-//                         const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-//                             method: "DELETE",
-//                             headers: {
-//                                 'Authorization': `Bearer ${localStorage.getItem("token")}`
-//                             })
-//                     }
-//                     catch (error) {
-//                         console.log(error);
-//                     }
-//                 }
-//             }
-// }
-
-// const closeModal = () => {
-//             document.getElementById("modal").style.display = "none";
-
-//             const deleteWorks = document.getElementsByClassName("delete");
-//             const deleteBtn = [...deleteWorks];
-
-//             for (let i = 0; i < deleteBtn.length; i++) {
-//                 deleteBtn[i].addEventListener("click", async function () {
-//                     if (confirm("Voulez-vous supprimer cette image ?")) {
-
-//                         try {
-//                             const response = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-//                             }
-//                         }
-
-//                         catch (error) {
-//                             console.log(error);
-//                         }
-//                     }
-//                 }
-//             } 
-// }
 
 
 // ******** MAIN CODE ********

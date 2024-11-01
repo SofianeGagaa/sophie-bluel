@@ -16,6 +16,7 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
     />
     <link rel="stylesheet" href="./assets/style.css" />
+    
   </head>
 
   <body>
@@ -36,7 +37,7 @@
           </li>
           <li>
             <a href="login.html">login</a>
-            <a href="#" id="logout" class="hide" >logout</a>
+            <!-- <a href="#" id="logout" class="hide" >logout</a> -->
           </li>
           <li>
             <img src="./assets/icons/instagram.png" alt="Instagram" />
@@ -73,63 +74,55 @@
       <section id="portfolio" class="portfolio">
 
         <dialog id="dialog">
-          <button class="btn-close">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
+          <button class="btn-close"><i class="fa-solid fa-xmark"></i></button>
           <!-- Contenu du dialog -->
           <section id="modal-gallery" class="modal-gallery">
             <h2 class="modal-title">Galerie photo</h2>
-            <button class="btn-back hide">
-              <i class="fa-solid fa-arrow-left"></i>
-            </button>
-          
+            <button class="btn-back hide"><i class="fa-solid fa-arrow-left"></i></button> 
             <div id="modal-content" class="modal-gallery">
               <!-- Contenu de la modale dans la galerie -->
             </div>
-
             <div class="div-bar">
               <!--  -->
             </div>
-
-            <button id="btn-add" class="btn-add">
-                Ajouter une photo
-            </button>
+            <button id="btn-add" class="btn-add"> Ajouter une photo</button>
             <form id="imageInput" class="hide" enctype="multipart/form-data" method="post">
-              <div id="imageInput-container" class="hide">
-                <ima id="imageInput-image" src="" alt="">
+              <div id="imageInput-container" class="hide"> <!-- id = "image-preview-container" -->
+                <ima id="imageInput-image" src="" alt=""> <!-- id = "previewImage"-->
               </div>
-              <input type="file" id="image" accept="image/*" name="image">
+              <input type="file" id="image" name="image" accept="image/*" ><br>
               <i class="fa-regular fa-image"></i>
-              <label class="btn-image" for="image" aria-label="Ajouter une photo">+Ajouter une photo</label><br>
-              <p class="hide">jpg, png</p>
+              <label class="btn-image" for="image" aria-label="Ajouter une photo">+Ajouter une photo</label><br> <!-- classe = btnImage -->
+              <p class="hide">jpg, png : 4mos max</p>
               <label for="name">Titre</label><br>
-              <input type="text" id="titre" name="name"><br>
+              <input type="text" id="titre" name="titre"><br>
               <label for="categories">Categorie</label><br>
               <select name="categories" id="categories">
-                <option value="0">Objets</option>
+                <option value="0"></option>
+                <option value="1">Objets</option>
                 <option value="2">Appartrements</option>
-                <option value="3">Hôtels et restaurants</option>
+                <option value="3">Hôtels & restaurants</option>
               </select>
             </form>
           </section>
         </dialog>
 
-      <section class="mes-projets">
-        <h2>Mes Projets</h2>
+        <section class="mes-projets">
+          <h2>Mes Projets</h2>
+          <button class="btn-modify hide">
+            <i class="fa-regular fa-pen-to-square"></i>
+            Modifier
+          </button>
+        </section>
 
-        <button class="btn-modify hide">
-          <i class="fa-regular fa-pen-to-square"></i>
-          Modifier
-        </button>
+        <ul id="filters" class="filters">
+          <!-- Contenu du code HTML injecté -->
+        </ul>
+
+        <div id="works" class="gallery">
+          <!-- Contenu du code HTML injecté -->
+        </div>
       </section>
-
-      <ul id="filters" class="filters">
-        <!-- Contenu du code HTML injecté -->
-      </ul>
-
-      <div id="works" class="gallery">
-        <!-- Contenu du code HTML injecté -->
-      </div>
 
       <section id="contact">
         <h2>Contact</h2>
