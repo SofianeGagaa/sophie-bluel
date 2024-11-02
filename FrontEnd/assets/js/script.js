@@ -5,6 +5,8 @@ const URL = "http://localhost:5678/api/";
 
 const worksElements = document.getElementById("works");
 const filtersElements = document.getElementById("filters");
+
+
 // const filterElements = document.getElementById("filter");
 
 // const editMode = document.querySelector(".edit-mode");
@@ -39,6 +41,8 @@ const getData = async (type) => {
 */
 const displayWorks = async () => {
     works = await getData("works");
+
+    worksElements.innerHTML = " ";
     // console.log(works);
 
     for (const work of works) {
@@ -56,164 +60,335 @@ const displayWorks = async () => {
     }
 }
 
-/**
- * Afficher la cartégorie des filtres sous forme de boutons
- * @param {Array} categories    
- */
+// *** DISPLAY CATEGORIES (FILTRES) ***//
+
 const displayCategories = async () => {
     categories = await getData("categories");
     // console.log(categories);
 
-    const allListElt = document.createElement("li");
-    // console.log(allListElt);
     const allButton = document.createElement("button");
 
-    allButton.textContent = "Tous";
-    allButton.className = "category-btn";
+    allButton.innerText = "Tous";
+    allButton.classList.add("filters-btn"); // Ajout de la classe "filter-btn";
 
     allButton.addEventListener("click", () => {
         displayWorks(works);
-    });
-    // console.log(allButton);
-
-    allListElt.appendChild(allButton);
-    // console.log(allListElt);
-    filtersElements.appendChild(allListElt);
-    // console.log(filtersElements);
+    })
+    filtersElements.appendChild(allButton);
 
     for (const category of categories) {
         const btnFiltered = document.createElement("button");
 
-        btnFiltered.textContent = category.name;
-        btnFiltered.classList.add = "category-btn";
-        filtersElements.appendChild(btnFiltered) ;
+        btnFiltered.innerText = category.name;
+        btnFiltered.classList.add("filters-btn"); // Ajout de la classe "filters-btn";
 
         btnFiltered.addEventListener("click", () => {
-            displayWorksByCategory(category.id);
+            displayFilderedWorks(category.id);
         });
         filtersElements.appendChild(btnFiltered);
-
     }
 }
 
-function displayWorksByCategory(categoryId) {
-    const filteredWorks = works.filter((work) => work.categoryId === categoryId);
+function displayFilderedWorks(categoryId) {
+    const filteredWorks = works.filter(work => work.categoryId === categoryId);
+
     displayWorks(filteredWorks);
+}
 
-} 
 
+
+/**
+ * Afficher la cartégorie des filtres sous forme de boutons
+ * @param {Array} categories    
+ */
+// const displayCategories = async () => {
+//     categories = await getData("categories");
+//     console.log(categories);
+
+//     const allListElt = document.createElement("li");
+//     // console.log(allListElt);
+//     const allButton = document.createElement("button");
+
+//     allButton.textContent = "Tous";
+//     allButton.className = "category-btn";
+
+//     allButton.addEventListener("click", () => {
+//         displayWorks(works);
+//     });
+//     // console.log(allButton);
+
+//     allListElt.appendChild(allButton);
+//     // console.log(allListElt);
+//     filtersElements.appendChild(allListElt);
+//     // console.log(filtersElements);
+
+//     for (const category of categories) {
+//         const btnFiltered = document.createElement("button");
+
+//         btnFiltered.textContent = category.name;
+//         btnFiltered.classList.add("category-btn"); // Ajout de la classe "category-btn";
+//         filtersElements.appendChild(btnFiltered) ;
+
+//         btnFiltered.addEventListener("click", () => {
+//             displayWorksByCategory(category.id);
+//         });
+//         filtersElements.appendChild(btnFiltered);
+//     }
+// }
+
+// function displayWorksByCategory(categoryId) {
+//     const filteredWorks = works.filter((work) => work.categoryId === categoryId);
+//     displayWorks(filteredWorks);
+// } 
+
+// ******** LOGIN & LOGOUT ******** //
+
+// *** Ce code défini une fonction nomée LOGIN, qui permet à un utilisateur de se connecter à une application web en suivant ces étapes ***//
 // *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
+
+const displayLogAdmin = () => {
+    if (localStorage.getItem("token")) {
+        editMode.classList.remove("hide");
+        editBtn.classList.remove("hide");
+        filtersElements.classList.add("hide");
+
+        loginBtn.classList.add("hide");
+        logoutBtn.classList.remove("hide");
+    } else {
+        editMode.classList.add("hide");
+        editBtn.classList.add("hide");
+        filtersElements.classList.remove("hide");
+
+        loginBtn.classList.remove("hide");
+        logoutBtn.classList.add("hide");
+    }
+}
+
+const logoutBtn = document.querySelector("#logout");
 const logout = () => {
     localStorage.removeItem("token");
-    window.location.reload();
+    displayLogAdmin();
+    location.reload();
 }
 
-const createLogoutBtn = () => {
-    const logoutButton = document.createElement("button");
-    const loginLink = document.querySelector("[href='login.html']");
+// logoutBtn.addEventListener("click", logout);
 
-    if (logoutButton && loginLink) {
-        logoutButton.textContent = "Logout";
-        logoutButton.className = "category-btn";
-        logoutButton.addEventListener("click", logout);
-        loginLink.replaceWith(logoutButton);
-    }
-}
+// const logout = () => {
+//     localStorage.removeItem("token");
+//     window.location.reload();
+// }
+
+// const createLogoutBtn = () => {
+//     const logoutButton = document.createElement("button");
+//     const loginLink = document.querySelector("[href='login.html']");
+
+//     if (logoutButton && loginLink) {
+//         logoutButton.textContent = "Logout";
+//         logoutButton.className = "category-btn";
+//         logoutButton.addEventListener("click", logout);
+//         loginLink.replaceWith(logoutButton);
+//     }
+// }
 
 // *** Vérifier si le Token d'authentification est présent dans le localStorage pour déterminer quelle interface doit être affichée ***//
-const checkToken = () => {
-    const token = localStorage.getItem("token");
-    // Si le jeton n'est pas dans le localStorage, on affiche les filtres
-    if (!token) {
-        displayCategories();
+// const checkToken = () => {
+//     const token = localStorage.getItem("token");
+//     // Si le jeton n'est pas dans le localStorage, on affiche les filtres
+//     if (!token) {
+//         displayCategories();
 
-    } else {
-        // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
+//     } else {
+//         // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
 
-        // Création du bouton de mode d'Édition
-        // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
-        const editButton = document.createElement("aside");
+//         // Création du bouton de mode d'Édition
+//         // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
+//         const editButton = document.createElement("aside");
 
-        if (editButton) {
-            // Ajout de l'icône fa fa-pen-to-square
-            const editIcon = document.createElement("i");
-            editIcon.className = "fa-solid fa-pen-to-square";
+//         if (editButton) {
+//             // Ajout de l'icône fa fa-pen-to-square
+//             const editIcon = document.createElement("i");
+//             editIcon.className = "fa-solid fa-pen-to-square";
 
-            // Ajout de l'icône et du texte dans le bouton de mode édition
-            editButton.textContent = "Mode edition";
-            editButton.className = "edit-mode";
-            editButton.insertBefore(editIcon, editButton.firstChild); // Ajout de l'icône avant le texte
-            document.body.insertAdjacentElement("afterbegin", editButton); // Ajout du bouton de mode d'édition en haut de la page
-        }
+//             // Ajout de l'icône et du texte dans le bouton de mode édition
+//             editButton.textContent = "Mode edition";
+//             editButton.className = "edit-mode";
+//             editButton.insertBefore(editIcon, editButton.firstChild); // Ajout de l'icône avant le texte
+//             document.body.insertAdjacentElement("afterbegin", editButton); // Ajout du bouton de mode d'édition en haut de la page
+//         }
+//     }
+// }
+
+// checkToken();
+
+// ******** PORTFOLIO ******** //
 
         // Récupérer lélément mes projets (#categories) et ajouter le bouton modifier
         // TODO : afficher le bouton modifier à coté du titre mes projets
 
 
 
-        const modifyButton = document.createElement("button");
-        const modifyIcon = document.createElement("i");
+        // const modifyButton = document.createElement("button");
+        // const modifyIcon = document.createElement("i");
 
-        modifyButton.textContent = "Modifier";
-        modifyButton.className = "modify-btn";
-        modifyIcon.className = "fa-solid fa-pen-to-square";
+        // modifyButton.textContent = "Modifier";
+        // modifyButton.className = "modify-btn";
+        // modifyIcon.className = "fa-solid fa-pen-to-square";
         // modifyButton.addEventListener("click", openModal);
 
-        modifyButton.appendChild(modifyIcon);
-        document.querySelector("#portfolio h2").insertAdjacentElement("afterend", modifyButton);
+        // modifyButton.appendChild(modifyIcon);
+        // document.querySelector("#portfolio h2").insertAdjacentElement("afterend", modifyButton);
 
 
 
 
         // TODO : OK
-        createLogoutBtn();
-    }
+        // createLogoutBtn();
 
+// ******** MODALS (fenètre de dialogue) ********
+
+const dialog = document.querySelector("dialog");
+const openButton = document.querySelector("dialog + .my-projects  button");
+const closeButton = document.querySelector("dialog button");
+
+/** Bascule la fenêtre de dialogue */
+
+const toggleModal = () => {
+    openButton.addEventListener("click", () => {
+        dialog.showModal();
+        dialog.classList.toggle("active");
+        displayModalGallery();
+    });
+
+    closeButton.addEventListener("click", () => {
+        dialog.close();
+        dialog.classList.toggle("active");
+    });
 }
 
-// ******** MODALS ********
+/** Création de la galerie */
 
-// const dialog = document.querySelector("#modal");
-// const openButton = document.querySelector("dialog + .mes-projets > button");
-// const closeButton = document.querySelector("#close-modal");
+const displayModalGallery = () => {
+    modalGallery.innerHTML = "";
 
-// const toggleModal = () => {
-//     openButton.addEventListener("click", () => {
-//         dialog.displayModal();
-//         dialog.className.toggle("active");
-//         generateModalGallery();
-//     });
+    for (let i = 0; i < works.length; i++) {
+        const figure = works[i];
 
-//     closeButton.addEventListener("click", () => {
-//         dialog.close();
-//         dialog.className.toggle("active");
-//     });
-// }
+        const galleryElement = document.createElement("figure");
+        galleryElement.classList.add("gallery-element");
+        galleryElement.innerHTML = `
+        <img src="${figure.imageUrl}" alt="${figure.title}">
+        <button class="btn-delete" data-id="${figure.id}"><i class="fa-solid fa-trash-can"></i></button>`;
 
-// const generateModalGallery = () => {
-//     modalGallery.innerHTML = "";
+        modalGallery.appendChild(galleryElement);
 
-//     for (let i = 0; i < works.length; i++) {
-//         const figure = works[i];
+        galleryElement.querySelector(".btn-delete").addEventListener("click", () => {
+            deleteWork(figure.id);
 
-//         const galleryElement = document.createElement("figure");
-//         galleryElement.className.add("gallery-element");
-//         galleryElement.innerHTML = `
-//         <img src="${figure.imageUrl}" alt="${figure.title}">
-//         <button class="btn-delete" data-id="${figure.id}"><i class="fa-solid fa-trash-can"></i></button>`;
+        });
+    }
+    addButton.addEventListener("click", generateModalForm);
+}
 
-//         modalGallery.appendChild(galleryElement);
+/**  DELETE WORKS (PROJETS)  */
 
-//         galleryElement.querySelector(".btn-delete").addEventListener("click", () => {
-//             deleteWork(figure.id);
+const deleteWork = async (id) => {
+    const token = localStorage.getItem("token");
 
-//         });
-//     }
-//     addButton.addEventListener("click", generateModalForm);
-// }
+    if (!token) {
+        alert("Vous devez être connecté pour supprimer une image.");
+        return;
+    }
 
-// const deleteWork = async (id) => {
-//     const deleteBtn = [...deleteWorks];
+    const responseDelete = await fetch(`http://localhost:5678/api/works/${id}`, {
+        method: "DELETE",
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (responseDelete.ok) {
+        works = works.filter(work => work.id !== id);
+
+        displayWorks(works);
+        displayModalGallery();
+    } else {
+        alert("Une erreur est survenue. Veuillez recharger la page.");
+    }
+}
+
+/**  Formulaire modale pour ajouter une image */
+
+const displayModalForm = () => {
+    modalGallery.innerHTML = "";
+
+    const submitButton = addButton;
+
+    document.querySelector(".modal-gallery h2").innerText = "Ajouter une image";
+    BackButton.classList.remove("hide");
+    formButton.classList.remove("hide");
+    submitButton.classList.add("active");
+    divBar.classList.add("active");
+    pPhoto.classList.remove("hide");
+
+    submitButton.innerText = "Valider";
+
+    const titlePhoto = document.createElement("h2");
+    modalGallery.appendChild(titlePhoto);
+
+    BackButton.addEventListener("click", () => {
+        displayModalGallery();
+
+        formButton.classList.add("hide");
+        submitButton.innerText = "Ajouter une image";
+        submitButton.classList.remove("active");
+        divBar.classList.remove("active");
+
+        document.querySelector(".modal-gallery h2").innerText = "Galerie photo";
+        BackButton.classList.add("hide");
+    })
+
+    document.getElementById("imageInput").addEventListener("change", previewImage);
+
+    submitButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+        sendFormData();  
+    });
+}
+
+/**  Affiche Image sélectionée par l'utilisateur */
+
+function previewImage() {
+    const submitButton = addButton;
+    const input = e.target;
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            reader.src= e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+    divForm.classList.remove("hide");
+    btnImage.classList.add("hideTwo");
+}
+
+const fileInput = document.getElementById('image');
+const previewContainer = document.getElementById('image-preview-container');
+const uploadForm = document.getElementById('ImageInput');
+
+document.addEventListener('DOMContentLoaded', () => {
+    const titleInput = document.getElementById('title');
+    const categorieSelect = document.getElementById('categories');
+    const validateBtn = addButton;
+});
+
+/**  Met à jour l'état du bouton en fonction des champs d'entrée */
+    
+
+
+    
+
+    // const deleteBtn = [...deleteWorks];
 
 //     for (let i = 0; i < deleteBtn.length; i++) {
 //         deleteBtn[i].addEventListener("click", async function () {
@@ -280,5 +455,5 @@ const checkToken = () => {
 
 // ******** MAIN CODE ********
 
-checkToken();
+// checkToken();
 displayWorks();
