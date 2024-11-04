@@ -9,7 +9,6 @@ const filtersElements = document.getElementById("filters");
 const editMode = document.querySelector(".edit-mode");
 const editBtn = document.querySelector(".btn-modify");
 const loginBtn = document.querySelector("#login");
-const logoutBtn = document.querySelector("#logout");
 // const addButton = document.querySelector(".add-button");
 
 // ******** VARIABLES ********
@@ -114,6 +113,8 @@ displayCategories();
 const displayLogAdmin = () => {
     // Rendre visible le mode édition pour l'admin connecté; le else est le contraire du if pour add/remove
     if (localStorage.getItem("token")) {
+        const logoutBtn = document.querySelector("#logout");
+
         editMode.classList.remove("hide");
         editBtn.classList.remove("hide");
         filtersElements.classList.add("hide");
@@ -137,7 +138,6 @@ const logout = () => {
     location.reload();
 }
 
-logoutBtn.addEventListener("click", logout);
 
 /*** Stape3: AJOUTER LA MODALE permettant à l'utilisateur de modifier ses projets 
  * Stape3.1: Ajout de la fenêtre modale- apparition et disparition (toggleModal)
