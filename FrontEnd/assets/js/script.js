@@ -9,7 +9,7 @@ const filtersElements = document.getElementById("filters");
 const editMode = document.querySelector(".edit-mode");
 const editBtn = document.querySelector(".btn-modify");
 const loginBtn = document.querySelector("#login");
-// const addButton = document.querySelector(".add-button");
+
 
 // ******** VARIABLES ********
 let works = [];
@@ -112,8 +112,19 @@ displayCategories();
 
 const displayLogAdmin = () => {
     // Rendre visible le mode édition pour l'admin connecté; le else est le contraire du if pour add/remove
+    console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token")) {
-        const logoutBtn = document.querySelector("#logout");
+        const logoutBtn = document.createElement("button");
+        const modifyBtn = document.createElement("button");
+
+        modifyBtn.id = "modify";
+        logoutBtn.id = "logout";
+
+        logoutBtn.innerText = "logout";
+        modifyBtn.innerText = "modify";
+      
+modifyBtn.addEventListener("click , displayModalGallery");
+logoutBtn.addEventListener("click", logout);
 
         editMode.classList.remove("hide");
         editBtn.classList.remove("hide");
@@ -127,7 +138,7 @@ const displayLogAdmin = () => {
         filtersElements.classList.remove("hide");
 
         loginBtn.classList.remove("hide");
-        logoutBtn.classList.add("hide");
+
     }
 }
 // displayLogAdmin();
@@ -179,7 +190,7 @@ const displayModalGallery = () => {
 
         });
     }
-    addButton.addEventListener("click", generateModalForm);
+    modifyBtn.addEventListener("click", generateModalForm);
 }
 
 /*** 
@@ -216,7 +227,7 @@ const deleteWork = async (id) => {
 const displayModalForm = () => {
     modalGallery.innerHTML = "";
 
-    const submitButton = addButton;
+    const submitButton = modifyBtn;
 
     document.querySelector(".modal-gallery h2").innerText = "Ajouter une image";
     BackButton.classList.remove("hide");
@@ -273,20 +284,16 @@ const uploadForm = document.getElementById('ImageInput');
 document.addEventListener('DOMContentLoaded', () => {
     const titleInput = document.getElementById('title');
     const categoriesSelect = document.getElementById('categories');
-    const validateBtn = addButton;
+
 
     // Mettre à jour le bouton en fonction des champs d'entrée
 
         const updateButtonState = () => {
-        const isTitleFilled = TitleInput.value.trim() !== '';
+        const isTitleFilled = titleInput.value.trim() !== '';
 
         const isCategorySelected = categoriesSelect.value !== '0';
 
-        if (isTitleFilled && isCategorySelected) {
-            validateBtn.classList.add('btnGreen');
-        } else {
-            validateBtn.classList.remove('btnGreen');
-        }
+  
     }
 
     updateButtonState();
@@ -343,7 +350,15 @@ function addImageToGallery(fileInput, title) {
         modalGallery.appendChild(newFigure);
 }
 
+ const init = async () => {
+            await getData("works");
+            await getData("categories");
 
+            displayWorks(works);
+            displayCategories();
+            displayLogAdmin();
+            toggleModal();
+        };
 
 
 
@@ -406,15 +421,7 @@ function addImageToGallery(fileInput, title) {
         
         /**  Initialise l'application en récupérant les données de l'API , en générant et affichant les travaux et les galeries, et en activant la modale */
 
-        // const init = async () => {
-        //     await getData("works");
-        //     await getData("categories");
-
-        //     displayWorks(works);
-        //     displayCategories();
-        //     displayLogAdmin();
-        //     toggleModal();
-        // };
+       
 
         // ******** MAIN ************ //
 
