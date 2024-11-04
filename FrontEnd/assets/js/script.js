@@ -3,12 +3,14 @@
 // ******** CONSTANTS ********
 const URL = "http://localhost:5678/api/";
 
-const worksElements = document.querySelector(".gallery");
-const filtersElements = document.querySelector(".filters");
+const worksElements = document.getElementById("works");
+const filtersElements = document.getElementById("filters");
 
 const editMode = document.querySelector(".edit-mode");
-const editBtn = document.querySelector(".edit-modify");
-const addButton = document.querySelector(".add-button");
+const editBtn = document.querySelector(".btn-modify");
+const loginBtn = document.querySelector("#login");
+const logoutBtn = document.querySelector("#logout");
+// const addButton = document.querySelector(".add-button");
 
 // ******** VARIABLES ********
 let works = [];
@@ -16,7 +18,9 @@ let categories = [];
 
 // ******** FUNCTIONS ********
 
-// *** Fonction qui récupè des données de type JSON à partir d'une URL en fonction d'un paramètre type ***//
+/*** Stape1: Home page 
+ **  Stape1.1: FONCTION générale utilisant fetch qui récupère les données de type JSON à partir d'une URL en fonction d'un paramètre type (works ou categories)  */
+
 const getData = async (type) => {
     try {
         const response = await fetch(URL + type);
@@ -28,21 +32,15 @@ const getData = async (type) => {
     }
 }
 
-// ******** DISPLAY WORKS (PROJETS) ********//
-
-// *** Ce code JavaScript est une fonction asynchrone qui permet d'afficher des filtres sous forme de boutons sur une page web. Ces filtres sont basés sur des catégories récupérées depuis une source externe. ***//
-
-/** Afficher les works ou les projets
- * @param {Array} works
-*/
+// *** DISPLAY WORKS (Affichage des projets de la gallerie***//
 const displayWorks = async () => {
     works = await getData("works");
 
-    worksElements.innerHTML = "";
+    // worksElements.innerHTML = "";
     // console.log(works);
 
     for (const work of works) {
-        const figure = document.createElement("work");
+        const figure = document.createElement("figure");
         const img = document.createElement("img");
         const figcaption = document.createElement("figcaption");
 
@@ -55,20 +53,22 @@ const displayWorks = async () => {
         worksElements.appendChild(figure);
     }
 }
+displayWorks();
 
+/*** Stape1.2: Display filtered works 
+ ** Ajout des filtres sous forme de boutons pour afficher les travaux par categorie
+*/
 // *** DISPLAY CATEGORIES (FILTRES) ***//
-
 const displayCategories = async () => {
     categories = await getData("categories");
     // console.log(categories);
 
     const allListElt = document.createElement("li");
     // console.log(allListElt);
-
     const allButton = document.createElement("button");
 
-    allButton.innerText = "Tous";
-    allButton.className = "filters-btn";
+    allButton.textContent = "Tous";
+    allButton.className = "btn-filters";
 
     allButton.addEventListener("click", () => {
         displayWorks(works);
@@ -83,71 +83,36 @@ const displayCategories = async () => {
         const btnFiltered = document.createElement("button");
 
         btnFiltered.textContent = category.name;
-        btnFiltered.classList.add("filters-btn"); // Ajout de la classe "filters-btn";
-
+        btnFiltered.classList.add("btn-filters"); // Ajout de la classe "btn-filters";
         filtersElements.appendChild(btnFiltered);
 
         btnFiltered.addEventListener("click", () => {
-            displayFilteredWorks(category.id);
+            filterWorks(category.id);
         });
         filtersElements.appendChild(btnFiltered);
     }
 }
-// function displayFilteredWorks(categoryId) {
-//     const filteredWorks = works.filter(work => work.categoryId === categoryId);
 
-//     displayWorks(filteredWorks);
-// }
-
-// Récupérer l'élément mes projets (#categories) et ajouter le bouton modifier
-// TODO : afficher le bouton modifier à coté du titre mes projets
-
-const modifyButton = document.createElement("button");
-const modifyIcon = document.createElement("i");
-
-modifyButton.textContent = "Modifier";
-modifyButton.className = "modify-btn";
-modifyIcon.className = "fa-solid fa-pen-to-square";
-// modifyButton.addEventListener("click", openModal);
-
-modifyButton.appendChild(modifyIcon);
-document.querySelector("#portfolio h2").insertAdjacentElement("afterend", modifyButton);
-
-// ******** LOGIN & LOGOUT ******** //
-
-// *** Ce code défini une fonction nomée LOGIN, qui permet à un utilisateur de se connecter à une application web en suivant ces étapes ***//
-
-
-
-// *** Ce code définit une fonction Javascript nomée LOGOUT, qui permet à un utilisateur de se déconnecter d'une application web en suivant ces étapes ***//
-
-const logoutBtn = document.querySelector("#logout");
-// const logout = () => {
-//     localStorage.removeItem("token");
-//     displayLogAdmin();
-//     location.reload();
-// }
-
-// logoutBtn.addEventListener("click", logout);
-
-const logout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
+function filterWorks(categoryId) {
+    const filteredWorks = works.filter(work => work.categoryId === categoryId);
+    console.log(filteredWorks);
+    displayWorks(filteredWorks);
 }
+displayCategories();
 
-const createLogoutBtn = () => {
-    const logoutButton = document.createElement("button");
-    const loginLink = document.querySelector("[href='login.html']");
 
-    if (logoutButton && loginLink) {
-        logoutButton.textContent = "Logout";
-        logoutButton.className = "filters-btn";
-        logoutButton.addEventListener("click", logout);
-        loginLink.replaceWith(logoutButton);
-    }
-}
+/*** Stape2: ADIM logPage. Codez la page de connexion
+ ** Stape2.1: Intégration de la page de formulaire
+ */
+
+//  Voir le fichier login.html
+
+/*** Stape2.1: ADIM. Authentification de l'utilisateur
+ * TOKEN d'authentification
+ */
 
 const displayLogAdmin = () => {
+    // Rendre visible le mode édition pour l'admin connecté; le else est le contraire du if pour add/remove
     if (localStorage.getItem("token")) {
         editMode.classList.remove("hide");
         editBtn.classList.remove("hide");
@@ -164,81 +129,21 @@ const displayLogAdmin = () => {
         logoutBtn.classList.add("hide");
     }
 }
+// displayLogAdmin();
 
-/** Etape1 : Gestion des classes avec une fonction utilitaire : Le code effectue beaucoup de manipulations de classes similaires, ce qui pourrait être simplifié avec une fonction utilitaire pour ajouter ou retirer plusieurs classes en une seule étape. Cela rendrait le code plus lisible ***/
-// const toggleElements = (elements, action) => {
-//     elements.forEach(el => el.classList[action]("hide"));
-// };
-
-/** Etape2 : Ensuite, vous pouvez l'utiliser pour simplifier displayLogAdmin */
-// const displayLogAdmin = () => {
-//     if (localStorage.getItem("token")) {
-//         toggleElements([editMode, editBtn], "remove");
-//         toggleElements([filtersElements, loginBtn], "add");
-//         toggleElements([logoutBtn], "remove");
-//     } else {
-//         toggleElements([editMode, editBtn], "add");
-//         toggleElements([filtersElements, loginBtn], "remove");
-//         toggleElements([logoutBtn], "add");
-//     }
-// };
-
-/** Etape3 : Centraliser l'état de connexion dans une variable : Au lieu de vérifier deux fois localStorage.getItem("token"), enregistrez cet état dans une variable. Cela rend le code plus lisible et réduit le nombre d’appels au localStorage */
-// const displayLogAdmin = () => {
-//     const isAdminLoggedIn = Boolean(localStorage.getItem("token"));
-//     if (isAdminLoggedIn) {
-//         // Rendre visible le mode édition pour l'admin connecté
-//         toggleElements([editMode, editBtn], "remove");
-//         toggleElements([filtersElements, loginBtn], "add");
-//         toggleElements([logoutBtn], "remove");
-//     } else {
-//         // Masquer le mode édition et afficher les éléments standards
-//         toggleElements([editMode, editBtn], "add");
-//         toggleElements([filtersElements, loginBtn], "remove");
-//         toggleElements([logoutBtn], "add");
-//     }
-// };
-
-
-// *** Vérifier si le Token d'authentification est présent dans le localStorage pour déterminer quelle interface doit être affichée ****/
-const checkToken = () => {
-    const token = localStorage.getItem("token");
-    // Si le jeton n'est pas dans le localStorage, on affiche les filtres
-    if (!token) {
-        displayCategories();
-
-    } else {
-        // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
-
-        // Création du bouton de mode d'Édition
-        // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
-        const editButton = document.createElement("aside");
-
-        if (editButton) {
-            // Ajout de l'icône fa fa-pen-to-square
-            const editIcon = document.createElement("i");
-            editIcon.className = "fa-solid fa-pen-to-square";
-
-            // Ajout de l'icône et du texte dans le bouton de mode édition
-            editButton.textContent = "Mode edition";
-            editButton.className = "edit-mode";
-            editButton.insertBefore(editIcon, editButton.firstChild); // Ajout de l'icône avant le texte
-            document.body.insertAdjacentElement("afterbegin", editButton); // Ajout du bouton de mode d'édition en haut de la page
-        }
-    }
+const logout = () => {
+    localStorage.removeItem("token");
+    displayLogAdmin();
+    location.reload();
 }
 
-// checkToken();
+logoutBtn.addEventListener("click", logout);
 
-// ******** PORTFOLIO ******** //
-// TODO : OK
-// createLogoutBtn();
+/*** Stape3: AJOUTER LA MODALE permettant à l'utilisateur de modifier ses projets 
+ * Stape3.1: Ajout de la fenêtre modale- apparition et disparition (toggleModal)
+*/
 
-// ******** MODALS (fenètre de dialogue) ********
-
-const dialog = document.querySelector("dialog");
-const openButton = document.querySelector("dialog + .my-projects  button");
-const closeButton = document.querySelector("dialog button");
+//  MODALS  
 
 /** Bascule la fenêtre de dialogue */
 
@@ -254,8 +159,6 @@ const toggleModal = () => {
         dialog.classList.toggle("active");
     });
 }
-
-/** Création de la galerie */
 
 const displayModalGallery = () => {
     modalGallery.innerHTML = "";
@@ -279,7 +182,8 @@ const displayModalGallery = () => {
     addButton.addEventListener("click", generateModalForm);
 }
 
-/**  DELETE WORKS (PROJETS)  */
+/*** 
+ * Stape3.2: Suppression de travaux existant */
 
 const deleteWork = async (id) => {
     const token = localStorage.getItem("token");
@@ -306,8 +210,9 @@ const deleteWork = async (id) => {
     }
 }
 
-/**  Formulaire modale pour ajouter une image */
-
+/*** Stape3.3: Envoi d'un nouveau projet au backend via le formulaire de la modale 
+ * Générer un formulaire por l'ajout d'une image
+*/
 const displayModalForm = () => {
     modalGallery.innerHTML = "";
 
@@ -345,7 +250,7 @@ const displayModalForm = () => {
     });
 }
 
-/**  Affiche Image sélectionée par l'utilisateur */
+/*** Stape3.4: Traitement de la réponse de l'API pour afficher dynamiquement la nouvelle image de la modale */
 
 function previewImage(e) {
     const input = e.target;
@@ -358,7 +263,7 @@ function previewImage(e) {
         reader.readAsDataURL(input.files[0]);
     }
     divForm.classList.remove("hide");
-    btnImage.classList.add("hideTwo");
+    btnImage.classList.add("hide Prime");
 }
 
 const fileInput = document.getElementById('image');
@@ -367,13 +272,12 @@ const uploadForm = document.getElementById('ImageInput');
 
 document.addEventListener('DOMContentLoaded', () => {
     const titleInput = document.getElementById('title');
-    const categorieSelect = document.getElementById('categories');
+    const categoriesSelect = document.getElementById('categories');
     const validateBtn = addButton;
 
+    // Mettre à jour le bouton en fonction des champs d'entrée
 
-/**  Met à jour l'état du bouton en fonction des champs d'entrée */
-
-    const updateButtonState = () => {
+        const updateButtonState = () => {
         const isTitleFilled = TitleInput.value.trim() !== '';
 
         const isCategorySelected = categoriesSelect.value !== '0';
@@ -385,9 +289,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    updateButtonState();
 
     titleInput.addEventListener('input', updateButtonState);
-    categorieSelect.addEventListener('change', updateButtonState);
+    categoriesSelect.addEventListener('change', updateButtonState);
 });
 
 const sendFormData = async () => {
@@ -401,61 +306,119 @@ const sendFormData = async () => {
     console.log(typeof formData.get("category"), formData.get("category"));
     if (formData.get("title") && formData.get("category") !== formData.get("image") && token) {
 
-        fetch("http://localhost:5678/api/works", {
-            method: "POST",
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formData
+    fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        body: formData
         })
-            .then(async (response) => {
-                if (response.ok) {
-                    const newWork = await response.json();
-                    works.push(newWork);
-                    console.log(works);
-                    // displayWorks(works);
-                }
-            })
-
-                .catch((error) => {
-                    console.error(error);
-                });
+        .then(async (response) => {
+            if (response.ok) {
+                const newWork = await response.json();
+                works.push(newWork);
+                console.log(works);
+                // displayWorks(works);
             }
-        };
+        })
+
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+};
+
+function addImageToGallery(fileInput, title) {  
+    const newFigure = document.createElement("figure");
+
+    const newImg = document.createElement("img");
+        newImg.src = URL.createObjectURL(fileInput.files[0]);
+        newImg.alt = title;
+
+    const newfigcaption = document.createElement("figcaption");
+        newfigcaption.textContent = title;
+
+        newFigure.appendChild(newImg);
+        newFigure.appendChild(newfigcaption);
+        modalGallery.appendChild(newFigure);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// checkToken();
+
+// ******** PORTFOLIO ******** //
+// TODO : OK
+// createLogoutBtn();
+
+// ******** MODALS (fenètre de dialogue) ********
+
+// const dialog = document.querySelector("dialog");
+// const openButton = document.querySelector("dialog + .my-projects  button");
+// const closeButton = document.querySelector("dialog button");
+
+
+
+/** Création de la galerie */
+
+
+
+/**  DELETE WORKS (PROJETS)  */
+
+
+
+/**  Formulaire modale pour ajouter une image */
+
+
+/**  Affiche Image sélectionée par l'utilisateur */
+
+
+
+/**  Met à jour l'état du bouton en fonction des champs d'entrée */
+
+
+
+
+
+
 
         /**  Ajoute une nouvelle image à la galerie avec le titre fourni */
-         imageUrl ==? fileInput
+        //  imageUrl ==? fileInput
 
-        function addImageToGallery(fileInput, title) {  
-            const newFigure = document.createElement("figure");
-
-            const newImg = document.createElement("img");
-            newImg.src = URL.createObjectURL(fileInput.files[0]);
-            newImg.alt = title;
-
-            const newfigcaption = document.createElement("figcaption");
-            newfigcaption.textContent = title;
-
-            newFigure.appendChild(newImg);
-            newFigure.appendChild(newfigcaption);
-            modalGallery.appendChild(newFigure);
-        }
-
+        
         /**  Initialise l'application en récupérant les données de l'API , en générant et affichant les travaux et les galeries, et en activant la modale */
 
-        const init = async () => {
-            await getData("works");
-            await getData("categories");
+        // const init = async () => {
+        //     await getData("works");
+        //     await getData("categories");
 
-            displayWorks(works);
-            displayCategories();
-            displayLogAdmin();
-            toggleModal();
-        };
+        //     displayWorks(works);
+        //     displayCategories();
+        //     displayLogAdmin();
+        //     toggleModal();
+        // };
 
         // ******** MAIN ************ //
 
-        init();
+        // init();
 
         //----------------------------------------------------------------------------------------------------------------------------------//
 
@@ -519,5 +482,92 @@ const sendFormData = async () => {
         // }
         // ******** MAIN CODE ********
 
-        checkToken();
-        displayWorks();
+        // checkToken();
+        // displayWorks();
+
+
+
+// ******** Fonction alternative GETDATA qui récupère les données  works et categories de l'API ******** //
+// const getData = async (type) => {
+//     const response = await fetch(URL + type);
+
+//     if (type === "works") {
+//         works = await response.json();
+//     } else  {
+//         categories = await response.json();
+//     }
+// }
+
+
+// const logout = () => {
+//     localStorage.removeItem("token");
+//     window.location.reload();
+// }
+
+// const createLogoutBtn = () => {
+//     const logoutButton = document.createElement("button");
+//     const loginLink = document.querySelector("[href='login.html']");
+
+//     if (logoutButton && loginLink) {
+//         logoutButton.textContent = "Logout";
+//         logoutButton.className = "filters-btn";
+//         logoutButton.addEventListener("click", logout);
+//         loginLink.replaceWith(logoutButton);
+//     }
+// }
+
+// const checkToken = () => {
+//     const token = localStorage.getItem("token");
+//     // Si le jeton n'est pas dans le localStorage, on affiche les filtres
+//     if (!token) {
+//         displayCategories();
+
+//     } else {
+        // Si le jeton est dans le localStorage, on affiche le mode d'édition ou les projets
+
+        // Création du bouton de mode d'Édition
+        // TODO : Ajouter l'icone fa-regular fa-pen-to-square dans le if
+        // const editButton = document.createElement("aside");
+
+//         if (editButton) {
+//             // Ajout de l'icône fa fa-pen-to-square
+//             const editIcon = document.createElement("i");
+//             editIcon.className = "fa-solid fa-pen-to-square";
+
+//             // Ajout de l'icône et du texte dans le bouton de mode édition
+//             editButton.textContent = "Mode edition";
+//             editButton.className = "edit-mode";
+//             editButton.insertBefore(editIcon, editButton.firstChild); // Ajout de l'icône avant le texte
+//             document.body.insertAdjacentElement("afterbegin", editButton); // Ajout du bouton de mode d'édition en haut de la page
+//         }
+//     }
+// }
+// TODO : afficher le bouton modifier à coté du titre mes projets
+
+// const modifyButton = document.createElement("button");
+// const modifyIcon = document.createElement("i");
+
+// modifyButton.textContent = "Modifier";
+// modifyButton.className = "modify-btn";
+// modifyIcon.className = "fa-solid fa-pen-to-square";
+// modifyButton.addEventListener("click", openModal);
+
+// modifyButton.appendChild(modifyIcon);
+// document.querySelector("#portfolio h2").insertAdjacentElement("afterend", modifyButton);
+
+// const logout = () => {
+//     localStorage.removeItem("token");
+//     window.location.reload();
+// }
+
+// const createLogoutBtn = () => {
+//     const logoutButton = document.createElement("button");
+//     const loginLink = document.querySelector("[href='login.html']");
+
+//     if (logoutButton && loginLink) {
+//         logoutButton.textContent = "Logout";
+//         logoutButton.className = "filters-btn";
+//         logoutButton.addEventListener("click", logout);
+//         loginLink.replaceWith(logoutButton);
+//     }
+// }

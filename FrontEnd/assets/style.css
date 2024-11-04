@@ -1,6 +1,6 @@
 /* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
+   	v2.0 | 20110126
+   	License: none (public domain)
 */
 
 html, body, div, span, applet, object, iframe,
@@ -294,7 +294,7 @@ dialog .fa-image {
     margin-bottom: -20px;
 }
 
-.modal-gallery #titre, #categories {
+.modal-gallery #title, #categories {
 	width: 300px;
 	height: 40px;
 	margin-top: 10px;
@@ -556,6 +556,6 @@ footer nav ul {
 .hide {
 	display: none;
 }
-.hideTwo {
+.hidePrime {
 	opacity: 0;
 }

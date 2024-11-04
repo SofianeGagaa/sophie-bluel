@@ -4,15 +4,15 @@
 const URL = "http://localhost:5678/api/users/login";
 
 const email = document.querySelector("#email");
-// const form = document.getElementById("login");
+const form = document.getElementById("login");
 const password = document.querySelector("#password");
 const error = document.querySelector("#error");
 const submit = document.querySelector('[type="submit"]');
 
 // ******** FUNCTIONS ******** //
 
-const userLoginData = async () => {
-    console.log("user test");
+const userLogin = async () => {
+    console.log("let's go");
     const options = {
         method: "POST",
         headers: {
@@ -42,7 +42,7 @@ const userLoginData = async () => {
 
 submit.addEventListener("click", async  (event)  =>{
     event.preventDefault();
-    await userLoginData();
+    await userLogin();
 });
 
 
