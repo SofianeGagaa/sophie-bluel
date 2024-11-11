@@ -6,9 +6,9 @@ const URL = "http://localhost:5678/api/";
 const worksElements = document.getElementById("works");
 const filtersElements = document.getElementById("filters");
 
-const editMode = document.querySelector(".edit-mode");
-const editBtn = document.querySelector(".btn-modify");
-const loginBtn = document.querySelector("#login");
+// const editMode = document.querySelector(".edit-mode");
+// const editBtn = document.querySelector(".btn-modify");
+// const loginBtn = document.querySelector("#login");
 
 
 // ******** VARIABLES ********
@@ -16,10 +16,6 @@ let works = [];
 let categories = [];
 
 // ******** FUNCTIONS ********
-
-/*** Stape1: Home page 
- **  Stape1.1: FONCTION générale utilisant fetch qui récupère les données de type JSON à partir d'une URL en fonction d'un paramètre type (works ou categories)  */
-
 const getData = async (type) => {
     try {
         const response = await fetch(URL + type);
@@ -31,13 +27,12 @@ const getData = async (type) => {
     }
 }
 
+
 // *** DISPLAY WORKS (Affichage des projets de la gallerie***//
 const displayWorks = async () => {
     works = await getData("works");
-
     // worksElements.innerHTML = "";
     // console.log(works);
-
     for (const work of works) {
         const figure = document.createElement("figure");
         const img = document.createElement("img");
@@ -54,63 +49,50 @@ const displayWorks = async () => {
 }
 displayWorks();
 
-/*** Stape1.2: Display filtered works 
- ** Ajout des filtres sous forme de boutons pour afficher les travaux par categorie
-*/
-// *** DISPLAY CATEGORIES (FILTRES) ***//
+// *** DISPLAY CATEGORIES (FILTRES) 
 const displayCategories = async () => {
     categories = await getData("categories");
     // console.log(categories);
 
-    const allListElt = document.createElement("li");
-    // console.log(allListElt);
     const allButton = document.createElement("button");
-
     allButton.textContent = "Tous";
     allButton.className = "btn-filters";
-
     allButton.addEventListener("click", () => {
         displayWorks(works);
     });
-    // console.log(allButton);
-    allListElt.appendChild(allButton);
+
+    const allListElt = document.createElement("li");
     // console.log(allListElt);
+    allListElt.appendChild(allButton);
     filtersElements.appendChild(allListElt);
-    // console.log(filtersElements);
 
     for (const category of categories) {
         const btnFiltered = document.createElement("button");
+        // console.log(btnFiltered);
 
         btnFiltered.textContent = category.name;
-        btnFiltered.classList.add("btn-filters"); // Ajout de la classe "btn-filters";
-        filtersElements.appendChild(btnFiltered);
+        btnFiltered.classList.add("btn-filters");
+        // filtersElements.appendChild(btnFiltered);
 
         btnFiltered.addEventListener("click", () => {
-            filterWorks(category.id);
+
+            const filteredWorks = works.filter(work => work.categoryId === category.id);
+            displayWorks(filteredWorks);
+            // filteredWorks(category.id);
         });
         filtersElements.appendChild(btnFiltered);
     }
-}
-
-function filterWorks(categoryId) {
-    const filteredWorks = works.filter(work => work.categoryId === categoryId);
-    console.log(filteredWorks);
-    displayWorks(filteredWorks);
-}
+} 
 displayCategories();
 
+// function filterWorks(categoryId) {
+//     const filteredWorks = works.filter(work => work.categoryId === categoryId);
+//     console.log(filteredWorks);
+//     displayWorks(filteredWorks);
+// } 
+// displayCategories(); 
 
-/*** Stape2: ADIM logPage. Codez la page de connexion
- ** Stape2.1: Intégration de la page de formulaire
- */
-
-//  Voir le fichier login.html
-
-/*** Stape2.1: ADIM. Authentification de l'utilisateur
- * TOKEN d'authentification
- */
-
-const displayLogAdmin = () => {
+/* const displayLogAdmin = () => {
     // Rendre visible le mode édition pour l'admin connecté; le else est le contraire du if pour add/remove
     console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token")) {
@@ -140,25 +122,24 @@ logoutBtn.addEventListener("click", logout);
         loginBtn.classList.remove("hide");
 
     }
-}
+} */
 // displayLogAdmin();
 
-const logout = () => {
-    localStorage.removeItem("token");
-    displayLogAdmin();
-    location.reload();
-}
+// const logout = () => {
+//     localStorage.removeItem("token");
+//     displayLogAdmin();
+//     location.reload();
+// }
 
 
-/*** Stape3: AJOUTER LA MODALE permettant à l'utilisateur de modifier ses projets 
- * Stape3.1: Ajout de la fenêtre modale- apparition et disparition (toggleModal)
-*/
+// *** Stape3: AJOUTER LA MODALE permettant à l'utilisateur de modifier ses projets Stape3.1: Ajout de la fenêtre modale- apparition et disparition (toggleModal)
 
-//  MODALS  
 
-/** Bascule la fenêtre de dialogue */
+//*** MODALS  
 
-const toggleModal = () => {
+// *** Bascule la fenêtre de dialogue 
+
+/* const toggleModal = () => {
     openButton.addEventListener("click", () => {
         dialog.showModal();
         dialog.classList.toggle("active");
@@ -169,9 +150,9 @@ const toggleModal = () => {
         dialog.close();
         dialog.classList.toggle("active");
     });
-}
+} */
 
-const displayModalGallery = () => {
+/* const displayModalGallery = () => {
     modalGallery.innerHTML = "";
 
     for (let i = 0; i < works.length; i++) {
@@ -191,12 +172,11 @@ const displayModalGallery = () => {
         });
     }
     modifyBtn.addEventListener("click", generateModalForm);
-}
+} */
 
-/*** 
- * Stape3.2: Suppression de travaux existant */
+// *** Stape3.2: Suppression de travaux existant 
 
-const deleteWork = async (id) => {
+/* const deleteWork = async (id) => {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -219,12 +199,11 @@ const deleteWork = async (id) => {
     } else {
         alert("Une erreur est survenue. Veuillez recharger la page.");
     }
-}
+} */
 
-/*** Stape3.3: Envoi d'un nouveau projet au backend via le formulaire de la modale 
- * Générer un formulaire por l'ajout d'une image
-*/
-const displayModalForm = () => {
+//*** Stape3.3: Envoi d'un nouveau projet au backend via le formulaire de la modale Générer un formulaire por l'ajout d'une image
+
+/* const displayModalForm = () => {
     modalGallery.innerHTML = "";
 
     const submitButton = modifyBtn;
@@ -259,11 +238,11 @@ const displayModalForm = () => {
         event.preventDefault();
         sendFormData();
     });
-}
+} */
 
-/*** Stape3.4: Traitement de la réponse de l'API pour afficher dynamiquement la nouvelle image de la modale */
+// *** Stape3.4: Traitement de la réponse de l'API pour afficher dynamiquement la nouvelle image de la modale  
 
-function previewImage(e) {
+/* function previewImage(e) {
     const input = e.target;
 
     if (input.files && input.files[0]) {
@@ -275,13 +254,13 @@ function previewImage(e) {
     }
     divForm.classList.remove("hide");
     btnImage.classList.add("hide Prime");
-}
+} */
 
-const fileInput = document.getElementById('image');
+/* const fileInput = document.getElementById('image');
 const previewContainer = document.getElementById('image-preview-container');
-const uploadForm = document.getElementById('ImageInput');
+const uploadForm = document.getElementById('ImageInput'); */
 
-document.addEventListener('DOMContentLoaded', () => {
+/* document.addEventListener('DOMContentLoaded', () => {
     const titleInput = document.getElementById('title');
     const categoriesSelect = document.getElementById('categories');
 
@@ -300,9 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     titleInput.addEventListener('input', updateButtonState);
     categoriesSelect.addEventListener('change', updateButtonState);
-});
+}); */
 
-const sendFormData = async () => {
+/* const sendFormData = async () => {
     const formData = new FormData();
     formData.append('title', document.getElementById('title').value);
     formData.append('category', document.getElementById('categories').value);
@@ -333,9 +312,9 @@ const sendFormData = async () => {
             console.error(error);
         });
     }
-};
+}; */
 
-function addImageToGallery(fileInput, title) {  
+/* function addImageToGallery(fileInput, title) {  
     const newFigure = document.createElement("figure");
 
     const newImg = document.createElement("img");
@@ -348,17 +327,18 @@ function addImageToGallery(fileInput, title) {
         newFigure.appendChild(newImg);
         newFigure.appendChild(newfigcaption);
         modalGallery.appendChild(newFigure);
-}
+} */
 
- const init = async () => {
-            await getData("works");
-            await getData("categories");
+/*  const init = async () => {
+    await getData("works");
+    await getData("categories");
 
-            displayWorks(works);
-            displayCategories();
-            displayLogAdmin();
-            toggleModal();
-        };
+    displayWorks(works);
+    displayCategories();
+    displayLogAdmin();
+    toggleModal();
+
+}; */
 
 
 
