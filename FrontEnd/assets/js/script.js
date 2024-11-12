@@ -54,7 +54,7 @@ const displayCategories = async () => {
 
   const allButton = document.createElement("button");
   allButton.textContent = "Tous";
-  allButton.className = "btn-filters";
+  allButton.className = "filters-btn";
 
   const allListElt = document.createElement("li");
   // console.log(allListElt);
@@ -63,6 +63,7 @@ const displayCategories = async () => {
 
   for (const category of categories) {
     const btnFiltered = document.createElement("button");
+    const liFiltered = document.createElement("li");
     // console.log(btnFiltered);
 
     btnFiltered.setAttribute("data-category", category.id);
@@ -72,7 +73,8 @@ const displayCategories = async () => {
       filterWorks(category.id, btnFiltered)
     );
     btnFiltered.textContent = category.name;
-    filtersElements.appendChild(btnFiltered);
+    liFiltered.appendChild(btnFiltered);
+    filtersElements.appendChild(liFiltered);
 
   }
 }
@@ -314,8 +316,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('logout').style.display = 'block';
     document.getElementById('filters').style.display = 'none';
     } else {
-    document.getElementById('modify-modal').style.display = 'none'
-    document.getElementById('modify').style.display = 'none';
+    document.getElementById('modify-modal').style.display = 'none';
+    document.getElementById('edit-mode').style.display = 'none';
 }
 
   // displayWorks();
