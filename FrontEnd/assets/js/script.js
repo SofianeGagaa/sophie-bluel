@@ -12,7 +12,7 @@ let categories = [];
 let token = "";
 let file;
 
-// ******** FUNCTIONS ********
+// ********  MAIN FUNCTIONS ********
 
 /** Récuperer les données de l'API */
 const getData = async (type) => {
@@ -188,11 +188,12 @@ const modifySecondModal = () => {
   }
 };
 
-  /** fermeture de Second Modal */
+/** fermeture de Second Modal */
 const closeSecondModal = () => {
   document.getElementById("overflow-modal").style.display = "none";
   document.getElementById("overflow-modal").style.opacity = 0;
-  }
+}
+
 /** Afficher l'image dans le modal */
 const selectImage = () => {
   const fileInput = document.getElementById('fileInput');
@@ -264,14 +265,11 @@ const submitWork = async (event) => {
 displayWorks();
 displayCategories();
 
-document.getElementById('return-second-modal')
-  .addEventListener('click', returnToModal);
+document.getElementById('return-second-modal').addEventListener('click', returnToModal);
 
-document.getElementById('add-photo')
-  .addEventListener('click', modifySecondModal);
+document.getElementById('add-photo').addEventListener('click', modifySecondModal);
 
-document.getElementById('second-close-modal')
-  .addEventListener('click', closeSecondModal);
+document.getElementById('second-close-modal').addEventListener('click', closeSecondModal);
 
 //*****  MODIFY BUTTON COLOR *****//
 
@@ -317,11 +315,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('filters').style.display = 'none';
     } else {
     document.getElementById('modify-modal').style.display = 'none'
-    document.getElementById('modify').style.display = 'none'; 
+    document.getElementById('modify').style.display = 'none';
 }
 
-  displayWorks();
-  displayCategories();
+  // displayWorks();
+  // displayCategories();
   
   document.getElementById('imageContainer').style.display = 'none';
 });
